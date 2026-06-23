@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project data (user files)
+data/*/
+!data/.gitkeep
+
+# Generated indexes
+faiss_index/*/
+!faiss_index/.gitkeep
+
+# Chat history
+chat_history/*/
+!chat_history/.gitkeep
+
+# Artifacts
+artifacts/*/
+!artifacts/.gitkeep
+
+# Streamlit
+.streamlit/secrets.toml
