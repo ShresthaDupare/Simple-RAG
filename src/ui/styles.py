@@ -31,15 +31,30 @@ GLOBAL_CSS = """
    Sidebar overrides
    ------------------------------------------------------------------------- */
 section[data-testid="stSidebar"] {
-    background-color: var(--sidebar-bg);
+    background-color: var(--sidebar-bg) !important;
 }
 
-section[data-testid="stSidebar"] .stMarkdown p,
-section[data-testid="stSidebar"] .stMarkdown span,
-section[data-testid="stSidebar"] label {
+/* All text in sidebar */
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3,
+section[data-testid="stSidebar"] div,
+section[data-testid="stSidebar"] caption,
+section[data-testid="stSidebar"] li,
+section[data-testid="stSidebar"] code {
     color: var(--sidebar-text) !important;
 }
 
+/* Sidebar heading (app title) */
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2 {
+    color: #ffffff !important;
+}
+
+/* Text input in sidebar */
 section[data-testid="stSidebar"] .stTextInput input {
     background-color: var(--sidebar-hover);
     color: var(--sidebar-text);
@@ -51,9 +66,14 @@ section[data-testid="stSidebar"] .stTextInput input:focus {
     border-color: var(--primary);
 }
 
+section[data-testid="stSidebar"] .stTextInput label {
+    color: var(--sidebar-text) !important;
+}
+
+/* Buttons in sidebar */
 section[data-testid="stSidebar"] .stButton button {
     background-color: var(--primary);
-    color: white;
+    color: white !important;
     border: none;
     border-radius: 8px;
     width: 100%;
@@ -61,6 +81,80 @@ section[data-testid="stSidebar"] .stButton button {
 
 section[data-testid="stSidebar"] .stButton button:hover {
     background-color: #5558e6;
+}
+
+section[data-testid="stSidebar"] .stButton button span {
+    color: white !important;
+}
+
+/* Secondary buttons (session items) */
+section[data-testid="stSidebar"] .stButton button[kind="secondary"] {
+    background-color: transparent;
+    color: var(--sidebar-text) !important;
+    border: 1px solid transparent;
+    text-align: left;
+}
+
+section[data-testid="stSidebar"] .stButton button[kind="secondary"]:hover {
+    background-color: var(--sidebar-hover);
+    border-color: transparent;
+}
+
+section[data-testid="stSidebar"] .stButton button[kind="secondary"] span {
+    color: var(--sidebar-text) !important;
+}
+
+/* Primary active button */
+section[data-testid="stSidebar"] .stButton button[kind="primary"] {
+    background-color: var(--sidebar-active);
+    color: #ffffff !important;
+}
+
+section[data-testid="stSidebar"] .stButton button[kind="primary"] span {
+    color: #ffffff !important;
+}
+
+/* Info/warning/error boxes in sidebar */
+section[data-testid="stSidebar"] .stAlert {
+    background-color: var(--sidebar-hover) !important;
+    border-left-color: var(--primary) !important;
+}
+
+section[data-testid="stSidebar"] .stAlert p,
+section[data-testid="stSidebar"] .stAlert span,
+section[data-testid="stSidebar"] .stAlert div {
+    color: var(--sidebar-text) !important;
+}
+
+/* Expanders in sidebar */
+section[data-testid="stSidebar"] .streamlit-expanderHeader {
+    color: var(--sidebar-text) !important;
+    background-color: transparent !important;
+    font-weight: 600;
+}
+
+section[data-testid="stSidebar"] .streamlit-expanderHeader:hover {
+    background-color: var(--sidebar-hover) !important;
+}
+
+section[data-testid="stSidebar"] .streamlit-expanderContent {
+    background-color: transparent !important;
+}
+
+/* Captions in sidebar */
+section[data-testid="stSidebar"] .stCaption {
+    color: var(--sidebar-text) !important;
+}
+
+/* Markdown dividers in sidebar */
+section[data-testid="stSidebar"] hr {
+    border-color: var(--sidebar-hover) !important;
+    opacity: 0.5;
+}
+
+/* Horizontal rule / separator */
+section[data-testid="stSidebar"] [data-testid="stMarkdown"] hr {
+    border-color: var(--sidebar-hover) !important;
 }
 
 /* -------------------------------------------------------------------------

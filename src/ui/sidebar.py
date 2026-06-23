@@ -48,7 +48,15 @@ def render_sidebar() -> None:
         if subjects:
             _render_subjects(subjects, search_query)
         else:
-            st.info("No subjects found in `data/`.")
+            st.markdown(
+                '<div style="background-color:#2a2a4a; border-left:3px solid #6366f1; '
+                'padding:10px 12px; border-radius:6px; margin-top:8px; '
+                'color:#e0e0e0; font-size:0.85rem;">'
+                '📁 No subjects found in <code>data/</code>.<br>'
+                '<span style="font-size:0.78rem; color:#aaa;">'
+                'Create a folder and add PDF/PPTX files.</span></div>',
+                unsafe_allow_html=True,
+            )
 
         # -- Settings (bottom) -------------------------------------------------
         st.markdown("---")
