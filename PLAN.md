@@ -2,7 +2,7 @@
 
 > **This is the living document for the project.** All design decisions, features, and changes are tracked here. Update this file whenever features are added, removed, or modified.
 
-**Last updated:** 2026-06-23 (Phase 7 complete)
+**Last updated:** 2026-06-25 (Phase 10 complete)
 
 ---
 
@@ -293,6 +293,10 @@ Simple RAG/
 ├── requirements.txt            # All dependencies
 ├── .env                        # DEEPSEEK_API_KEY=sk-...
 ├── .gitignore
+├── app.py                      # Root entry point for Streamlit Community Cloud
+│
+├── .streamlit/                 # Streamlit configuration
+│   └── config.toml             # Server + theme settings
 │
 ├── src/                        # All source code (maintainability-first structure)
 │   ├── __init__.py
@@ -326,12 +330,11 @@ Simple RAG/
 │   └── ui/                     # Streamlit UI (split by component)
 │       ├── __init__.py
 │       ├── app.py              # Main entry, session state, routing
-│       ├── sidebar.py          # Sidebar rendering
-│       ├── chat.py             # Chat display + input
-│       ├── artifacts_panel.py  # Artifact slide-in panel
-│       ├── file_manager.py     # Upload, list, delete files
-│       ├── settings.py         # Settings sliders
-│       └── styles.py           # All CSS in one place
+│       ├── sidebar.py          # Sidebar rendering + settings sliders
+│       ├── chat.py             # Chat display + input + streaming + citations
+│       ├── artifacts_panel.py  # Artifact slide-in panel + slash commands
+│       ├── file_manager.py     # Upload, list, delete files + rebuild index
+│       └── styles.py           # All CSS in one place (Streamlit 1.58.0)
 │
 ├── data/                       # User creates subject folders here
 │   └── .gitkeep
@@ -369,30 +372,29 @@ python-dotenv>=1.0.0
 
 | File | Purpose | ~Lines | Status |
 |------|---------|--------|--------|
-| `src/config.py` | Settings, env loading, constants, path helpers | ~94 | Done |
-| `src/models.py` | Dataclasses: ChatMessage, Session, Artifact, SourceChunk | ~134 | Done |
-| `src/exceptions.py` | Custom exceptions for clear error paths | ~52 | Done |
-| `src/loaders/scanner.py` | Scan subjects, list files | ~69 | Done |
-| `src/loaders/pdf_loader.py` | PDF → chunks + full text | ~72 | Done |
-| `src/loaders/pptx_loader.py` | PPTX → chunks + full text | ~86 | Done |
-| `src/loaders/__init__.py` | Dispatcher, load_and_chunk() | ~126 | Done |
-| `src/retrieval/embeddings.py` | Sentence-transformer wrapper | ~40 | Done |
-| `src/retrieval/vector_store.py` | FAISS create/load/search/search-all | ~100 | Done |
-| `src/retrieval/rag_chain.py` | Prompt building + DeepSeek streaming | ~213 | Done |
-| `src/storage/chat_store.py` | JSON CRUD for sessions | ~100 | Done |
-| `src/storage/artifact_store.py` | Artifact file management | ~90 | Done |
+| `src/config.py` | Settings, env loading, constants, path helpers | ~70 | Done |
+| `src/models.py` | Dataclasses: ChatMessage, Session, Artifact, SourceChunk | ~112 | Done |
+| `src/exceptions.py` | Custom exceptions for clear error paths | ~35 | Done |
+| `src/loaders/scanner.py` | Scan subjects, list files | ~51 | Done |
+| `src/loaders/pdf_loader.py` | PDF → chunks + full text | ~52 | Done |
+| `src/loaders/pptx_loader.py` | PPTX → chunks + full text | ~64 | Done |
+| `src/loaders/__init__.py` | Dispatcher, load_and_chunk() | ~100 | Done |
+| `src/retrieval/embeddings.py` | Sentence-transformer wrapper | ~37 | Done |
+| `src/retrieval/vector_store.py` | FAISS create/load/search/search-all | ~162 | Done |
+| `src/retrieval/rag_chain.py` | Prompt building + DeepSeek streaming | ~166 | Done |
+| `src/storage/chat_store.py` | JSON CRUD for sessions | ~77 | Done |
+| `src/storage/artifact_store.py` | Artifact file management | ~93 | Done |
 | `src/artifacts/prompts.py` | All artifact prompt templates | ~45 | Done |
-| `src/artifacts/parser.py` | Slash command parsing | ~95 | Done |
-| `src/artifacts/generator.py` | Streaming artifact generation | ~120 | Done |
-| `src/ui/styles.py` | All CSS in one place | ~200 | Done |
-| `src/ui/app.py` | Main entry, session state, routing | ~100 | Done |
-| `src/ui/sidebar.py` | Sidebar rendering | ~150 | Done |
-| `src/ui/chat.py` | Chat display + input | ~200 | Pending |
-| `src/ui/artifacts_panel.py` | Artifact slide-in panel | ~100 | Pending |
-| `src/ui/file_manager.py` | Upload, list, delete files | ~80 | Pending |
-| `src/ui/settings.py` | Settings sliders | ~60 | Pending |
+| `src/artifacts/parser.py` | Slash command parsing | ~61 | Done |
+| `src/artifacts/generator.py` | Streaming artifact generation | ~102 | Done |
+| `src/ui/styles.py` | All CSS in one place (Streamlit 1.58.0 compatible) | ~483 | Done |
+| `src/ui/app.py` | Main entry, session state, routing | ~103 | Done |
+| `src/ui/sidebar.py` | Sidebar rendering + settings sliders | ~216 | Done |
+| `src/ui/chat.py` | Chat display + input + streaming + citations | ~251 | Done |
+| `src/ui/artifacts_panel.py` | Artifact slide-in panel + slash commands | ~210 | Done |
+| `src/ui/file_manager.py` | Upload, list, delete files + rebuild index | ~146 | Done |
 
-**Total: ~2096 lines across 22 files.**
+**Total: ~2665 lines across 22 files.**
 
 ---
 
@@ -437,14 +439,17 @@ python-dotenv>=1.0.0
 - `src/ui/app.py` — page config, session state, routing
 - `src/ui/sidebar.py` — sidebar rendering
 
-### Phase 8: Chat UI (Pending)
+### Phase 8: Chat UI ✅ DONE
 - `src/ui/chat.py` — messages, input, streaming, citations
 
-### Phase 9: File Manager UI (Pending)
+### Phase 9: File Manager UI ✅ DONE
 - `src/ui/file_manager.py` — upload, list, delete, rebuild index
 
-### Phase 10: Artifacts UI (Pending)
-- `src/ui/artifacts_panel.py` — slide-in panel, slash commands, autocomplete
+### Phase 10: Artifacts UI ✅ DONE
+- `src/ui/artifacts_panel.py` — slide-in panel, slash commands, autocomplete, streaming, copy, download
+- `src/ui/chat.py` — full slash command handling with artifact generation
+- `src/ui/sidebar.py` — artifact list in sidebar
+- `src/ui/styles.py` — artifact panel CSS
 
 ### Phase 11: Final Polish (Pending)
 - Responsive CSS, suggested questions, Search All toggle
@@ -518,7 +523,7 @@ This separation keeps PLAN.md clean as a reference document while todo.md serves
 
 ```bash
 pip install -r requirements.txt
-streamlit run src/ui/app.py
+streamlit run app.py
 ```
 
 ---
@@ -549,6 +554,10 @@ streamlit run src/ui/app.py
 | 2026-06-23 | Phase 0–6 cross-phase review: found & fixed 4 bugs (1 critical, 2 medium, 1 low) |
 | 2026-06-23 | Completed Phase 7: styles.py, app.py, sidebar.py — UI setup |
 | 2026-06-23 | Fixed sidebar CSS — all selectors updated for Streamlit 1.58.0 (expander, caption, slider, alert, markdown) |
+| 2026-06-25 | Completed Phase 8: chat.py — chat UI with messages, streaming, citations, input bar |
+| 2026-06-25 | Completed Phase 9: file_manager.py — upload modal, file list with delete, rebuild index with progress bar |
+| 2026-06-25 | Completed Phase 10: artifacts_panel.py — slide-in panel, streaming, copy/download, sidebar artifact list |
+| 2026-06-25 | Doc audit: corrected all line counts (~2256→~2665), removed phantom settings.py, updated file tree, run commands |
 
 ---
 

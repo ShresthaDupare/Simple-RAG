@@ -86,33 +86,33 @@
 ---
 
 ## Phase 8: Chat UI
-- [ ] `src/ui/chat.py` — top bar (subject name, session name, menu)
-- [ ] `src/ui/chat.py` — message display (user bubbles, assistant plain text)
-- [ ] `src/ui/chat.py` — streaming response display with spinner
-- [ ] `src/ui/chat.py` — source citations (clickable pills `[1]` `[2]`)
-- [ ] `src/ui/chat.py` — expandable source chunks on click
-- [ ] `src/ui/chat.py` — copy answer button on hover
-- [ ] `src/ui/chat.py` — input bar (auto-resize, Enter=send, Shift+Enter=newline)
-- [ ] `src/ui/chat.py` — attachment button for file upload
-- [ ] `src/ui/chat.py` — placeholder adapts to current subject
+- [x] `src/ui/chat.py` — top bar (subject name, session name, menu)
+- [x] `src/ui/chat.py` — message display (user bubbles, assistant plain text)
+- [x] `src/ui/chat.py` — streaming response display with spinner
+- [x] `src/ui/chat.py` — source citations (clickable pills `[1]` `[2]`)
+- [x] `src/ui/chat.py` — expandable source chunks on click
+- [x] `src/ui/chat.py` — copy answer button on hover
+- [x] `src/ui/chat.py` — input bar (auto-resize, Enter=send, Shift+Enter=newline)
+- [x] `src/ui/chat.py` — attachment button for file upload
+- [x] `src/ui/chat.py` — placeholder adapts to current subject
 
 ---
 
 ## Phase 9: File Manager UI
-- [ ] `src/ui/file_manager.py` — file upload modal
-- [ ] `src/ui/file_manager.py` — file list per subject with delete option
-- [ ] `src/ui/file_manager.py` — rebuild index button with progress bar
+- [x] `src/ui/file_manager.py` — file upload modal
+- [x] `src/ui/file_manager.py` — file list per subject with delete option
+- [x] `src/ui/file_manager.py` — rebuild index button with progress bar
 
 ---
 
 ## Phase 10: Artifacts UI
-- [ ] `src/ui/artifacts_panel.py` — slide-in panel from right
-- [ ] `src/ui/artifacts_panel.py` — slash command detection in input
-- [ ] `src/ui/artifacts_panel.py` — autocomplete dropdown for `/` commands
-- [ ] `src/ui/artifacts_panel.py` — artifact streaming display
-- [ ] `src/ui/artifacts_panel.py` — copy artifact button
-- [ ] `src/ui/artifacts_panel.py` — download artifact as `.md` button
-- [ ] `src/ui/artifacts_panel.py` — artifact list in sidebar
+- [x] `src/ui/artifacts_panel.py` — slide-in panel from right
+- [x] `src/ui/artifacts_panel.py` — slash command detection in input
+- [x] `src/ui/artifacts_panel.py` — autocomplete dropdown for `/` commands
+- [x] `src/ui/artifacts_panel.py` — artifact streaming display
+- [x] `src/ui/artifacts_panel.py` — copy artifact button
+- [x] `src/ui/artifacts_panel.py` — download artifact as `.md` button
+- [x] `src/ui/artifacts_panel.py` — artifact list in sidebar
 
 ---
 
@@ -157,6 +157,10 @@
 | 2026-06-23 | Phase 0–6 Review | generator.py, rag_chain.py, PLAN.md — fixed 4 bugs (1 critical, 2 medium, 1 low) |
 | 2026-06-23 | Phase 7 | src/ui/styles.py, src/ui/app.py, src/ui/sidebar.py |
 | 2026-06-23 | CSS Fix | src/ui/styles.py — sidebar selectors updated for Streamlit 1.58.0 |
+| 2026-06-25 | Phase 8 | src/ui/chat.py — chat UI with messages, streaming, citations, input bar |
+| 2026-06-25 | Phase 9 | src/ui/file_manager.py, src/ui/sidebar.py, src/ui/app.py — file manager with upload, list, delete, rebuild index |
+| 2026-06-25 | Phase 10 | src/ui/artifacts_panel.py, src/ui/chat.py, src/ui/sidebar.py, src/ui/styles.py — artifact panel, streaming, copy, download, sidebar list |
+| 2026-06-25 | Doc Audit | PLAN.md, todo.md — corrected line counts, removed phantom settings.py, updated file tree and notes |
 
 ---
 
@@ -195,5 +199,7 @@
 ## Notes
 
 - Run `pip install -r requirements.txt` after Phase 0
-- Run `streamlit run src/ui/app.py` after Phase 7
+- Run `streamlit run app.py` to start the app locally
 - DeepSeek API key must be in `.env` before Phase 4
+- For Streamlit Community Cloud: set entry point to `src/ui/app.py`
+- Settings sliders are in `sidebar.py` (no separate `settings.py`)
