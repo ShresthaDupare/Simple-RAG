@@ -28,7 +28,7 @@ GLOBAL_CSS = """
 }
 
 /* -------------------------------------------------------------------------
-   Sidebar overrides
+   Sidebar overrides — Streamlit 1.58.0 compatible
    ------------------------------------------------------------------------- */
 section[data-testid="stSidebar"] {
     background-color: var(--sidebar-bg) !important;
@@ -41,53 +41,61 @@ section[data-testid="stSidebar"] label,
 section[data-testid="stSidebar"] h1,
 section[data-testid="stSidebar"] h2,
 section[data-testid="stSidebar"] h3,
-section[data-testid="stSidebar"] div,
-section[data-testid="stSidebar"] caption,
+section[data-testid="stSidebar"] h4,
+section[data-testid="stSidebar"] h5,
+section[data-testid="stSidebar"] h6,
 section[data-testid="stSidebar"] li,
-section[data-testid="stSidebar"] code {
+section[data-testid="stSidebar"] code,
+section[data-testid="stSidebar"] summary,
+section[data-testid="stSidebar"] [data-testid="stCaption"],
+section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] {
     color: var(--sidebar-text) !important;
 }
 
-/* Sidebar heading (app title) */
+/* Headings slightly brighter */
 section[data-testid="stSidebar"] h1,
 section[data-testid="stSidebar"] h2 {
     color: #ffffff !important;
 }
 
-/* Text input in sidebar */
-section[data-testid="stSidebar"] .stTextInput input {
+/* Text input fields */
+section[data-testid="stSidebar"] .stTextInput [data-testid="stTextInputRootElement"] input {
     background-color: var(--sidebar-hover);
     color: var(--sidebar-text);
     border: 1px solid transparent;
     border-radius: 8px;
 }
 
-section[data-testid="stSidebar"] .stTextInput input:focus {
+section[data-testid="stSidebar"] .stTextInput [data-testid="stTextInputRootElement"] input:focus {
     border-color: var(--primary);
 }
 
-section[data-testid="stSidebar"] .stTextInput label {
+section[data-testid="stSidebar"] .stTextInput [data-testid="stWidgetLabel"] {
     color: var(--sidebar-text) !important;
 }
 
-/* Buttons in sidebar */
+/* All buttons */
 section[data-testid="stSidebar"] .stButton button {
-    background-color: var(--primary);
-    color: white !important;
-    border: none;
     border-radius: 8px;
     width: 100%;
 }
 
-section[data-testid="stSidebar"] .stButton button:hover {
+/* Primary buttons */
+section[data-testid="stSidebar"] .stButton button[kind="primary"] {
+    background-color: var(--sidebar-active);
+    color: #ffffff !important;
+    border: none;
+}
+
+section[data-testid="stSidebar"] .stButton button[kind="primary"]:hover {
     background-color: #5558e6;
 }
 
-section[data-testid="stSidebar"] .stButton button span {
-    color: white !important;
+section[data-testid="stSidebar"] .stButton button[kind="primary"] span {
+    color: #ffffff !important;
 }
 
-/* Secondary buttons (session items) */
+/* Secondary buttons */
 section[data-testid="stSidebar"] .stButton button[kind="secondary"] {
     background-color: transparent;
     color: var(--sidebar-text) !important;
@@ -104,57 +112,91 @@ section[data-testid="stSidebar"] .stButton button[kind="secondary"] span {
     color: var(--sidebar-text) !important;
 }
 
-/* Primary active button */
-section[data-testid="stSidebar"] .stButton button[kind="primary"] {
-    background-color: var(--sidebar-active);
-    color: #ffffff !important;
+/* Expanders */
+section[data-testid="stSidebar"] [data-testid="stExpander"] details {
+    border-color: var(--sidebar-hover) !important;
 }
 
-section[data-testid="stSidebar"] .stButton button[kind="primary"] span {
-    color: #ffffff !important;
-}
-
-/* Info/warning/error boxes in sidebar */
-section[data-testid="stSidebar"] .stAlert {
-    background-color: var(--sidebar-hover) !important;
-    border-left-color: var(--primary) !important;
-}
-
-section[data-testid="stSidebar"] .stAlert p,
-section[data-testid="stSidebar"] .stAlert span,
-section[data-testid="stSidebar"] .stAlert div {
-    color: var(--sidebar-text) !important;
-}
-
-/* Expanders in sidebar */
-section[data-testid="stSidebar"] .streamlit-expanderHeader {
+section[data-testid="stSidebar"] [data-testid="stExpander"] summary {
     color: var(--sidebar-text) !important;
     background-color: transparent !important;
     font-weight: 600;
 }
 
-section[data-testid="stSidebar"] .streamlit-expanderHeader:hover {
+section[data-testid="stSidebar"] [data-testid="stExpander"] summary:hover {
     background-color: var(--sidebar-hover) !important;
 }
 
-section[data-testid="stSidebar"] .streamlit-expanderContent {
+section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] {
     background-color: transparent !important;
+    border-top-color: var(--sidebar-hover) !important;
 }
 
-/* Captions in sidebar */
-section[data-testid="stSidebar"] .stCaption {
+section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] p,
+section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] span,
+section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] label,
+section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] [data-testid="stWidgetLabel"] {
     color: var(--sidebar-text) !important;
 }
 
-/* Markdown dividers in sidebar */
+/* Alert/info boxes */
+section[data-testid="stSidebar"] [data-testid="stAlert"] {
+    background-color: var(--sidebar-hover) !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stAlertContainer"] {
+    background-color: var(--sidebar-hover) !important;
+    border-left-color: var(--primary) !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stAlert"] p,
+section[data-testid="stSidebar"] [data-testid="stAlert"] span,
+section[data-testid="stSidebar"] [data-testid="stAlert"] div,
+section[data-testid="stSidebar"] [data-testid="stAlert"] a,
+section[data-testid="stSidebar"] [data-testid="stAlertContainer"] p,
+section[data-testid="stSidebar"] [data-testid="stAlertContainer"] span {
+    color: var(--sidebar-text) !important;
+}
+
+/* Slider labels and values */
+section[data-testid="stSidebar"] .stSlider [data-testid="stWidgetLabel"] {
+    color: var(--sidebar-text) !important;
+    font-size: 0.8rem;
+}
+
+section[data-testid="stSidebar"] .stSlider [data-testid="stSliderTickBar"] {
+    color: var(--sidebar-text) !important;
+}
+
+section[data-testid="stSidebar"] .stSlider [data-testid="stSliderThumbValue"] {
+    color: var(--sidebar-text) !important;
+}
+
+/* Dividers */
 section[data-testid="stSidebar"] hr {
     border-color: var(--sidebar-hover) !important;
     opacity: 0.5;
 }
 
-/* Horizontal rule / separator */
 section[data-testid="stSidebar"] [data-testid="stMarkdown"] hr {
     border-color: var(--sidebar-hover) !important;
+}
+
+/* Markdown content in sidebar */
+section[data-testid="stSidebar"] [data-testid="stMarkdown"] p,
+section[data-testid="stSidebar"] [data-testid="stMarkdown"] span,
+section[data-testid="stSidebar"] [data-testid="stMarkdown"] li,
+section[data-testid="stSidebar"] [data-testid="stMarkdown"] a,
+section[data-testid="stSidebar"] [data-testid="stMarkdown"] code {
+    color: var(--sidebar-text) !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stMarkdown"] a {
+    color: #8b8bff !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stMarkdown"] a:hover {
+    color: #aaaaff !important;
 }
 
 /* -------------------------------------------------------------------------
