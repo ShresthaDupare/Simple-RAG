@@ -156,6 +156,7 @@
 | 2026-06-23 | Phase 6 | src/artifacts/__init__.py, src/artifacts/prompts.py, src/artifacts/parser.py, src/artifacts/generator.py |
 | 2026-06-23 | Phase 0–6 Review | generator.py, rag_chain.py, PLAN.md — fixed 4 bugs (1 critical, 2 medium, 1 low) |
 | 2026-06-23 | Phase 7 | src/ui/styles.py, src/ui/app.py, src/ui/sidebar.py |
+| 2026-06-23 | CSS Fix | src/ui/styles.py — sidebar selectors updated for Streamlit 1.58.0 |
 
 ---
 

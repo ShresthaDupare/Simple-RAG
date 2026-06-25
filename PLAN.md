@@ -548,6 +548,7 @@ streamlit run src/ui/app.py
 | 2026-06-23 | Completed Phase 6: prompts.py, parser.py, generator.py — artifact system |
 | 2026-06-23 | Phase 0–6 cross-phase review: found & fixed 4 bugs (1 critical, 2 medium, 1 low) |
 | 2026-06-23 | Completed Phase 7: styles.py, app.py, sidebar.py — UI setup |
+| 2026-06-23 | Fixed sidebar CSS — all selectors updated for Streamlit 1.58.0 (expander, caption, slider, alert, markdown) |
 
 ---
 
