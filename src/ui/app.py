@@ -32,12 +32,12 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Inject Inter font (separate call — <link> tags break st.markdown if inside <style>)
-st.markdown(FONT_LINK, unsafe_allow_html=True)
+# Inject fonts (Inter + Material Icons) — <link> tags need st.html(), not st.markdown
+st.html(FONT_LINK)
 
-# Inject global CSS
-st.markdown(GLOBAL_CSS_BASE, unsafe_allow_html=True)
-st.markdown(GLOBAL_CSS_ENHANCED, unsafe_allow_html=True)
+# Inject global CSS — st.html() bypasses markdown parser, handles <style> blocks correctly
+st.html(GLOBAL_CSS_BASE)
+st.html(GLOBAL_CSS_ENHANCED)
 
 # ---------------------------------------------------------------------------
 # Session state defaults

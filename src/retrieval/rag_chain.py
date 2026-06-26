@@ -143,7 +143,7 @@ def call_deepseek_stream(
             stream=True,
         )
         for chunk in stream:
-            if chunk.choices and chunk.choices[0].delta.content:
+            if chunk.choices and chunk.choices[0].delta.content is not None:
                 yield chunk.choices[0].delta.content
     except Exception as e:
         logger.error("DeepSeek API error: %s", e)
@@ -189,12 +189,18 @@ def get_answer(
         chat_history = []
 
     # Retrieve relevant chunks
-    if search_all_subjects:
-        chunks = search_all(question, top_k=top_k)
-    else:
-        if subject is None:
-            raise ValueError("subject is required when search_all_subjects is False")
-        chunks = search(subject, question, top_k=top_k)
+    try:
+        if search_all_subjects:
+            chunks = search_all(question, top_k=top_k)
+        else:
+            if subject is None:
+                raise ValueError("subject is required when search_all_subjects is False")
+            chunks = search(subject, question, top_k=top_k)
+    except IndexNotFoundError:
+        raise APIError(
+            f"No index found for '{subject}'. "
+            "Go to the sidebar → click 'Build Index' or 'Rebuild Index' first."
+        )
 
     # Build prompt
     messages = build_prompt(question, chunks, chat_history, max_history)
