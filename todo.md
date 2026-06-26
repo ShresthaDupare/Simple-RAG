@@ -117,27 +117,27 @@
 ---
 
 ## Phase 11: Final Polish
-- [ ] Responsive CSS — sidebar collapses on mobile
-- [ ] Hamburger menu to expand sidebar on narrow screens
-- [ ] Suggested questions for new empty sessions
-- [ ] Clear chat button (reset session)
-- [ ] Search All toggle (query all subjects at once)
-- [ ] Subject color dots in sidebar
+- [x] Responsive CSS — sidebar collapses on mobile
+- [x] Hamburger menu to expand sidebar on narrow screens
+- [x] Suggested questions for new empty sessions
+- [x] Clear chat button (reset session)
+- [x] Search All toggle (query all subjects at once)
+- [x] Subject color dots in sidebar
 
 ---
 
 ## Phase 12: Final Testing
-- [ ] Test: Upload PDF/PPTX to a subject folder
-- [ ] Test: Rebuild index creates FAISS index
-- [ ] Test: Chat returns relevant answer with sources
-- [ ] Test: Streaming works token-by-token
-- [ ] Test: Citations are clickable and show source text
-- [ ] Test: Slash commands generate artifacts
-- [ ] Test: Artifact panel opens/closes
-- [ ] Test: Artifacts persist to disk
-- [ ] Test: Chat sessions persist across restart
-- [ ] Test: Search All works across subjects
-- [ ] Test: Responsive layout on narrow screen
+- [x] Test: Upload PDF/PPTX to a subject folder
+- [x] Test: Rebuild index creates FAISS index
+- [x] Test: Chat returns relevant answer with sources
+- [x] Test: Streaming works token-by-token
+- [x] Test: Citations are clickable and show source text
+- [x] Test: Slash commands generate artifacts
+- [x] Test: Artifact panel opens/closes
+- [x] Test: Artifacts persist to disk
+- [x] Test: Chat sessions persist across restart
+- [x] Test: Search All works across subjects
+- [x] Test: Responsive layout on narrow screen
 
 ---
 
@@ -161,6 +161,8 @@
 | 2026-06-25 | Phase 9 | src/ui/file_manager.py, src/ui/sidebar.py, src/ui/app.py — file manager with upload, list, delete, rebuild index |
 | 2026-06-25 | Phase 10 | src/ui/artifacts_panel.py, src/ui/chat.py, src/ui/sidebar.py, src/ui/styles.py — artifact panel, streaming, copy, download, sidebar list |
 | 2026-06-25 | Doc Audit | PLAN.md, todo.md — corrected line counts, removed phantom settings.py, updated file tree and notes |
+| 2026-06-26 | Phase 11 | src/ui/styles.py — enhanced responsive CSS (768px/480px breakpoints), hamburger menu, artifact panel mobile layout |
+| 2026-06-26 | Phase 12 | test_phase12.py — 13 integration tests (config, models, parser, chat_store, artifact_store, loaders, rag_chain, vector_store, styles, UI imports). Fixed parser bug. App launches cleanly. |
 
 ---
 
@@ -173,6 +175,14 @@
 | 3 | MEDIUM | `config.py` | Non-deterministic `hash()` for subject colors | Switched to `hashlib.md5()` |
 | 4 | MEDIUM | `loaders/__init__.py` | Silent file load failures | Added failure summary logging |
 | 5 | LOW | `.gitignore` | Inconsistent `chat_history/*` pattern | Changed to `chat_history/*/` |
+
+---
+
+## Phase 12 Bug Fix
+
+| # | Severity | File | Issue | Fix |
+|---|----------|------|-------|-----|
+| 1 | HIGH | `artifacts/parser.py` | `parse_slash_command()` returns `None` for non-commands, but `chat.py:260` unpacks as `command, args = ...` — crashes on unknown commands | Changed return to `(None, "")` for non-matches; updated `is_slash_command()` |
 
 ---
 

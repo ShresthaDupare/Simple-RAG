@@ -17,17 +17,31 @@ from src.storage.chat_store import (
     load_sessions,
     rename_session,
 )
+from src.ui.artifacts_panel import render_artifact_list_sidebar
 
 
 # ---------------------------------------------------------------------------
 # Sidebar entry point
 # ---------------------------------------------------------------------------
 
+
 def render_sidebar() -> None:
     """Render the full sidebar: title, search, subjects, sessions, settings."""
     with st.sidebar:
-        st.markdown("# 📚 Study RAG")
-        st.markdown("")
+        st.markdown(
+            '<div style="display:flex;align-items:center;gap:8px;padding:4px 0 0 0;">'
+            '<span style="font-size:1.4rem;">📚</span>'
+            '<span style="font-size:1.25rem;font-weight:700;color:#f0ebe5;'
+            'letter-spacing:-0.02em;">Study RAG</span>'
+            "</div>",
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            '<p style="font-size:0.75rem;color:var(--sidebar-text-dim);'
+            "margin:-4px 0 12px 0;\">"
+            "Study assistant with RAG</p>",
+            unsafe_allow_html=True,
+        )
 
         # -- Search bar --------------------------------------------------------
         search_query = st.text_input(
@@ -38,7 +52,7 @@ def render_sidebar() -> None:
         )
 
         # -- New Chat button ---------------------------------------------------
-        if st.button("+ New Chat", use_container_width=True):
+        if st.button("+ New Chat", use_container_width=True, type="primary"):
             _handle_new_chat()
 
         st.markdown("---")
@@ -49,14 +63,25 @@ def render_sidebar() -> None:
             _render_subjects(subjects, search_query)
         else:
             st.markdown(
-                '<div style="background-color:#2a2a4a; border-left:3px solid #6366f1; '
-                'padding:10px 12px; border-radius:6px; margin-top:8px; '
-                'color:#e0e0e0; font-size:0.85rem;">'
-                '📁 No subjects found in <code>data/</code>.<br>'
-                '<span style="font-size:0.78rem; color:#aaa;">'
-                'Create a folder and add PDF/PPTX files.</span></div>',
+                '<div style="background-color:#262320; border-left:3px solid #d97706; '
+                "padding:10px 12px; border-radius:6px; margin-top:8px; "
+                "color:#d4cfc8; font-size:0.85rem;\">"
+                "📁 No subjects found in <code>data/</code>.<br>"
+                '<span style="font-size:0.78rem; color:#9d9690;">'
+                "Create a folder and add PDF/PPTX files.</span></div>",
                 unsafe_allow_html=True,
             )
+
+        # -- File Manager button -----------------------------------------------
+        st.markdown("---")
+        if st.button("📂 Manage Files", use_container_width=True, key="manage_files_btn"):
+            st.session_state["show_file_manager"] = True
+            st.rerun()
+
+        # -- Artifact list (per subject) ---------------------------------------
+        current_subject = st.session_state.get("current_subject")
+        if current_subject:
+            render_artifact_list_sidebar(current_subject)
 
         # -- Settings (bottom) -------------------------------------------------
         st.markdown("---")
@@ -67,9 +92,10 @@ def render_sidebar() -> None:
 # New chat
 # ---------------------------------------------------------------------------
 
-def _handle_new_chat() -> None:
+
+def _handle_new_chat(subject_override: str | None = None) -> None:
     """Create a new chat session for the current subject."""
-    subject = st.session_state.get("current_subject")
+    subject = subject_override or st.session_state.get("current_subject")
     if not subject:
         subjects = scan_subjects()
         if subjects:
@@ -86,8 +112,9 @@ def _handle_new_chat() -> None:
 # Subject groups + session list
 # ---------------------------------------------------------------------------
 
+
 def _render_subjects(subjects: list[str], search_query: str) -> None:
-    """Render collapsible subject groups with session lists."""
+    """Render collapsible subject groups with session lists and color dots."""
     for subject in subjects:
         color = get_subject_color(subject)
         sessions = load_sessions(subject)
@@ -101,21 +128,31 @@ def _render_subjects(subjects: list[str], search_query: str) -> None:
                 if search_query.lower() in s.name.lower()
             }
 
-        # Subject header
+        # Subject header with color dot shown inside the expander when opened.
+        # (Streamlit expanders cannot be wrapped in custom HTML divs,
+        #  so the dot is rendered as a meta row inside the expander body.)
         with st.expander(
             f"**{subject}**",
             expanded=is_active_subject,
         ):
+            # Subject meta row with color dot + session count
+            st.markdown(
+                f'<div class="subject-meta-row">'
+                f'<span class="subject-dot-render" '
+                f'style="display:inline-block;width:10px;height:10px;'
+                f"border-radius:50%;background:{color};flex-shrink:0;\"></span>"
+                f'<span class="subject-session-count">'
+                f"{len(sessions)} chat(s)</span></div>",
+                unsafe_allow_html=True,
+            )
+
             # + New Chat button per subject
             if st.button(
                 "+ New Chat",
                 key=f"new_chat_{subject}",
                 use_container_width=True,
             ):
-                sid = create_session(subject)
-                st.session_state.current_subject = subject
-                st.session_state.current_session_id = sid
-                st.rerun()
+                _handle_new_chat(subject_override=subject)
 
             # Session list
             if not sessions:
@@ -134,6 +171,7 @@ def _render_subjects(subjects: list[str], search_query: str) -> None:
                     )
 
 
+
 def _render_session_item(
     subject: str,
     session_id: str,
@@ -145,11 +183,12 @@ def _render_session_item(
 
     with col1:
         label = f"{'▸ ' if is_active else ''}{session_name}"
+        btn_type = "primary" if is_active else "secondary"
         if st.button(
             label,
             key=f"session_{session_id}",
             use_container_width=True,
-            type="primary" if is_active else "secondary",
+            type=btn_type,
         ):
             st.session_state.current_subject = subject
             st.session_state.current_session_id = session_id
@@ -191,9 +230,24 @@ def _render_session_item(
 # Settings
 # ---------------------------------------------------------------------------
 
+
 def _render_settings() -> None:
     """Render settings sliders at the bottom of the sidebar."""
     with st.expander("⚙ Settings", expanded=False):
+        # Search All toggle
+        st.markdown(
+            '<div class="search-all-wrapper">',
+            unsafe_allow_html=True,
+        )
+        st.session_state.search_all = st.checkbox(
+            "Search all subjects",
+            value=st.session_state.search_all,
+            key="search_all_checkbox",
+            help="When checked, queries search across all subjects simultaneously",
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown("---")
+
         st.session_state.top_k = st.slider(
             "Top-K results",
             min_value=TOP_K_RANGE[0],

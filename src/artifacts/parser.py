@@ -10,34 +10,35 @@ _COMMANDS = {"summary", "glossary", "compare", "explain"}
 _SLASH_RE = re.compile(r"^/(\w+)\s*(.*)", re.DOTALL)
 
 
-def parse_slash_command(text: str) -> tuple[str, str] | None:
+def parse_slash_command(text: str) -> tuple[str | None, str]:
     """Parse a slash command from user input.
 
     Args:
         text: Raw user input text.
 
     Returns:
-        Tuple of (command, args) if valid slash command, else None.
+        Tuple of (command, args) if valid slash command, else (None, "").
         command is one of: summary, glossary, compare, explain.
         args is the remaining text after the command.
     """
     text = text.strip()
     match = _SLASH_RE.match(text)
     if not match:
-        return None
+        return None, ""
 
     command = match.group(1).lower()
     args = match.group(2).strip()
 
     if command not in _COMMANDS:
-        return None
+        return None, ""
 
     return command, args
 
 
 def is_slash_command(text: str) -> bool:
     """Check if text starts with a valid slash command."""
-    return parse_slash_command(text) is not None
+    command, _ = parse_slash_command(text)
+    return command is not None
 
 
 def get_available_commands() -> list[dict[str, str]]:

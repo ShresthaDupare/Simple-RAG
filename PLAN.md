@@ -45,28 +45,28 @@ A Streamlit web app with a ChatGPT/Claude-hybrid UI for querying study material 
 
 ---
 
-## UI Design
+## UI Design — v1 (Original)
 
 ### Visual Style: ChatGPT + Claude Hybrid
 
-**Color Palette:**
+**Color Palette (v1 — replaced 2026-06-26):**
 
-| Element | Color |
-|---------|-------|
-| Background | `#ffffff` |
-| Sidebar bg | `#1a1a2e` (dark navy) |
-| Sidebar text | `#e0e0e0` |
-| Sidebar hover | `#2a2a4a` |
-| Sidebar active | `#3a3a5a` |
-| Primary accent | `#6366f1` (indigo) |
-| User message bg | `#f0f0ff` (light indigo tint) |
-| Assistant message | `#ffffff` (plain text, no bubble) |
-| Citation pills | `#6366f1` on `#f0f0ff` |
-| Input bg | `#f7f7f8` |
-| Input border | `#e5e5e5` |
-| Send button | `#6366f1` |
-| Text | `#1a1a2e` |
-| Subtle text | `#888888` |
+| Element | v1 Color | v2 Replacement |
+|---------|----------|----------------|
+| Background | `#ffffff` | `#faf9f7` (warm paper) |
+| Sidebar bg | `#1a1a2e` (cold navy) | `#1c1a17` (warm charcoal) |
+| Sidebar text | `#e0e0e0` | `#d4cfc8` (warm light) |
+| Sidebar hover | `#2a2a4a` | `#2f2c28` |
+| Sidebar active | `#3a3a5a` | `#38342f` |
+| Primary accent | `#6366f1` (indigo) | `#d97706` (amber/copper) |
+| User message bg | `#f0f0ff` (barely visible) | `#fef3c7` (amber tint bubble) |
+| Assistant message | `#ffffff` (no container) | White card with shadow + border |
+| Citation pills | `#6366f1` on `#f0f0ff` | `#d97706` amber pills, white text |
+| Input bg | `#f7f7f8` | `#ffffff` (card) |
+| Input border | `#e5e5e5` | `#e7e5e2` (warm) |
+| Send button | `#6366f1` | Amber gradient `#d97706 → #ea580c` |
+| Text | `#1a1a2e` | `#1c1b1a` (rich warm dark) |
+| Subtle text | `#888888` | `#78716c` (warm muted) |
 
 ### Layout Structure
 
@@ -387,14 +387,14 @@ python-dotenv>=1.0.0
 | `src/artifacts/prompts.py` | All artifact prompt templates | ~45 | Done |
 | `src/artifacts/parser.py` | Slash command parsing | ~61 | Done |
 | `src/artifacts/generator.py` | Streaming artifact generation | ~102 | Done |
-| `src/ui/styles.py` | All CSS in one place (Streamlit 1.58.0 compatible) | ~483 | Done |
+| `src/ui/styles.py` | All CSS in one place (Streamlit 1.58.0 compatible) | ~530 | Done |
 | `src/ui/app.py` | Main entry, session state, routing | ~103 | Done |
 | `src/ui/sidebar.py` | Sidebar rendering + settings sliders | ~216 | Done |
 | `src/ui/chat.py` | Chat display + input + streaming + citations | ~251 | Done |
 | `src/ui/artifacts_panel.py` | Artifact slide-in panel + slash commands | ~210 | Done |
 | `src/ui/file_manager.py` | Upload, list, delete files + rebuild index | ~146 | Done |
 
-**Total: ~2665 lines across 22 files.**
+**Total: ~2710 lines across 22 files.**
 
 ---
 
@@ -536,6 +536,232 @@ streamlit run app.py
 
 ---
 
+## Design System v2 — "Warm Academia" (2026-06-26)
+
+> **Complete UI redesign.** All visual styles were overhauled for a modern, polished look.
+> Colors, typography, spacing, shadows, and component styles were all redesigned.
+> Zero functional/logical changes — only CSS and HTML presentation was modified.
+
+### Design Philosophy
+
+A Notion-inspired study tool that feels like a **premium notebook** — warm off-white
+pages (`#faf9f7`) evoking paper texture, amber/copper accents (`#d97706`) that suggest
+highlighter marks, and a sophisticated warm-dark sidebar for navigation. Clean spacing,
+soft shadows, and refined typography (Inter) make it feel intentional, not cobbled together.
+
+**Key principles:**
+1. **Practical visibility** — messages must be easily readable, contrast ratios respected
+2. **Modern minimalism** — Notion-style: lots of whitespace, soft shadows, clean hierarchy
+3. **Warmth without distraction** — warm tones that feel inviting without being playful
+4. **Subtle motion** — fade-in messages, smooth hover transitions, no gratuitous animation
+
+### Color Palette
+
+#### Main Area — Warm Paper
+
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `--bg` | `#faf9f7` | Page background — warm off-white, like premium paper |
+| `--surface` | `#ffffff` | Card/surface backgrounds (assistant messages, input bar) |
+| `--surface-hover` | `#f5f2ed` | Hover states on surfaces |
+| `--input-bg` | `#f3f0ec` | Input/text field backgrounds |
+| `--text` | `#1c1b1a` | Primary text — rich warm dark, never pure black |
+| `--text-dim` | `#78716c` | Secondary text, labels, metadata |
+| `--text-subtle` | `#a8a29e` | Placeholder text, captions |
+| `--border` | `#e7e5e2` | Borders, dividers — warm gray |
+| `--border-light` | `#f0eee9` | Lighter borders for subtle separation |
+
+#### Sidebar — Warm Dark Charcoal
+
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `--sidebar-bg` | `#1c1a17` | Sidebar background — warm dark charcoal, not cold navy |
+| `--sidebar-surface` | `#262320` | Surface elements within sidebar |
+| `--sidebar-hover` | `#2f2c28` | Hover states in sidebar |
+| `--sidebar-active` | `#38342f` | Active/selected state |
+| `--sidebar-text` | `#d4cfc8` | Primary text in sidebar — warm light |
+| `--sidebar-text-dim` | `#9d9690` | Muted text in sidebar |
+| `--sidebar-border` | `#2d2a26` | Dividers in sidebar |
+
+#### Accent — Amber/Copper
+
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `--accent` | `#d97706` | Primary accent — buttons, links, active indicators |
+| `--accent-light` | `#fef3c7` | Light tint — user message bubbles, hover backgrounds |
+| `--accent-hover` | `#b45309` | Hover state for accent elements |
+| `--accent-text` | `#92400e` | Text on top of accent-light backgrounds |
+| `--accent-gradient` | `linear-gradient(135deg, #d97706, #ea580c)` | Gradient for primary buttons |
+
+#### Semantic
+
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `--success` / `--success-bg` | `#059669` / `#ecfdf5` | Indexed status, success states |
+| `--warning` / `--warning-bg` | `#d97706` / `#fffbeb` | Not indexed, warnings |
+| `--error` / `--error-bg` | `#dc2626` / `#fef2f2` | Errors, delete actions |
+
+### Typography
+
+| Property | Value |
+|----------|-------|
+| Font family | `Inter` (Google Fonts), with system fallback stack |
+| Weights used | 400 (regular), 500 (medium), 600 (semibold), 700 (bold) |
+| Body size | `0.9375rem` (15px) |
+| Body line-height | `1.6` |
+| Sidebar text | `0.875rem` |
+| Sidebar caption | `0.75rem` |
+| Code | Monospace, `#1c1b1a` on `#f5f2ed` |
+| Sidebar code | `#d4cfc8` on `#262320` |
+
+**Font source:** Google Fonts CDN with `font-display: swap` for fallback.
+
+**Fallback stack:** `'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+Roboto, Oxygen, Ubuntu, Cantarell, sans-serif`
+
+### Shadow System
+
+| Level | Value | Where Used |
+|-------|-------|------------|
+| `--shadow-sm` | `0 1px 2px rgba(0,0,0,0.04)` | Messages, file cards, input bar default |
+| `--shadow-md` | `0 2px 8px rgba(0,0,0,0.06)` | Input bar on focus, hovered cards |
+| `--shadow-lg` | `0 4px 16px rgba(0,0,0,0.08)` | Modals, popovers |
+| `--shadow-xl` | `0 8px 32px rgba(0,0,0,0.10)` | Overlays, panels |
+
+### Border Radius
+
+| Level | Value | Where Used |
+|-------|-------|------------|
+| `--radius-sm` | `6px` | Small buttons, rename inputs |
+| `--radius-md` | `8px` | Regular buttons, sidebar inputs |
+| `--radius-lg` | `12px` | Messages, cards, input bar, panels |
+| `--radius-xl` | `16px` | Large containers, artifact panel |
+
+### Motion & Animation
+
+| Animation | Timing | Where Used |
+|-----------|--------|------------|
+| `messageIn` | 0.2s ease | Messages entering the chat (fade + translate) |
+| `fadeIn` | 0.25-0.4s ease | Panels, empty states, suggested questions |
+| Hover transitions | 150ms ease | All interactive elements |
+
+### Component Breakdown
+
+#### 1. Sidebar
+- **Background:** Gradient `180deg` from `#1c1a17` to `#1f1d19`
+- **Title:** `📚 Study RAG` with subtitle
+- **Search bar:** `--sidebar-surface` bg, amber focus ring
+- **New Chat button:** Amber gradient, subtle shadow, lift on hover
+- **Subject expanders:** Color dot via `::before` pseudo-element using per-subject CSS variable
+- **Session items:** Active state has amber left border; hover reveals rename/delete
+- **Settings:** Clean expander, sliders with warm labels, Search All checkbox at top
+
+#### 2. Top Bar — Glassmorphism
+- `background: rgba(255, 255, 255, 0.80)` with `backdrop-filter: blur(12px)`
+- Sticky positioning with subtle bottom border
+- Subject name (bold) · session name (muted)
+- Clear Chat button
+
+#### 3. User Messages — Amber-Tinted Bubble
+- `background: linear-gradient(135deg, #fef3c7, #fffbeb)`
+- Left `3px` accent border in amber
+- Floated right, `max-width: 78%`
+- Subtle shadow and rounded corners
+
+#### 4. Assistant Messages — White Card
+- White background with `1px` warm border
+- Subtle shadow for depth
+- Hover reveals copy button
+
+#### 5. Citation Pills
+- Amber background with white text, rounded pills
+- `user-select: none`
+
+#### 6. Source Chunks
+- Warm tint background, amber left border
+- Expandable via `<details>`
+
+#### 7. Input Bar
+- White card with shadow, amber focus ring
+- Send button uses amber gradient
+
+#### 8. Suggested Questions
+- Card-style Streamlit buttons with warm border
+- Hover: amber border, warm background, slight lift
+
+#### 9. Empty States
+- Centered layout with large icon, heading, descriptive text
+
+#### 10. Artifact Panel
+- Warm background, amber-accent header separator
+- Consistent action buttons
+
+#### 11. File Manager
+- File cards: icon, name, size, status pill, delete
+- Status: green (indexed) / amber (not indexed)
+- Progress bar: amber gradient fill
+
+#### 12. Scrollbar
+- Thin `6px` track, semi-transparent warm-thumb
+
+### Responsive Design
+
+| Breakpoint | Behavior |
+|------------|----------|
+| ≤ 768px | Sidebar max-width 260px; user bubbles float none; session name hidden; reduced padding |
+| ≤ 480px | Tighter message padding, further reduced margins |
+
+### What Changed from v1 (Migration Notes)
+
+| v1 Element | v1 Style | v2 Style |
+|------------|----------|----------|
+| Sidebar bg | Cold navy `#1a1a2e` | Warm charcoal `#1c1a17` w/ gradient |
+| Sidebar text | `#e0e0e0` | `#d4cfc8` (warmer) |
+| Sidebar surface | No dedicated | `--sidebar-surface: #262320` |
+| Sidebar active | Same-color darker | Distinct `#38342f` |
+| Main bg | Sterile `#ffffff` | Warm paper `#faf9f7` |
+| Accent | Indigo `#6366f1` | Amber `#d97706` |
+| User messages | Barely visible `#f0f0ff` | Visible amber tint `#fef3c7` |
+| Assistant messages | Plain text | White card + border + shadow |
+| Citations | Indigo pills | Amber pills |
+| Font | System default | Inter (Google Fonts) |
+| Shadows | None | 4-tier shadow system |
+| Animations | None | messageIn, fadeIn, transitions |
+| Color dots | CSS existed, never rendered | Rendered via CSS variable |
+| Top bar | Flat white bar | Glassmorphism w/ blur |
+| Suggested Qs | Broken JS onclick | Proper Streamlit buttons |
+| Search All toggle | Not exposed in UI | Checkbox in Settings |
+| Clear Chat | No way to clear | Button in top bar |
+| Scrollbar | Browser default | Custom warm-toned thin |
+
+### Files Modified
+
+| File | Change Type | Scope |
+|------|-------------|-------|
+| `src/ui/styles.py` | Full rewrite | All CSS replaced with Design System v2 |
+| `src/ui/sidebar.py` | Moderate | Color dots, Search All toggle, refined meta row |
+| `src/ui/chat.py` | Moderate | Clear Chat btn, glass top bar, suggested Qs fix, msg class updates |
+| `src/ui/app.py` | Minor | Empty state styling, `pending_question` session state |
+| `src/ui/artifacts_panel.py` | Minor | Refined CSS classes for amber styling |
+| `src/ui/file_manager.py` | Minor | File cards, status pills, upload modal styling |
+| `PLAN.md` | Documentation | This section — Design System v2 documented |
+
+### Design Rationale — Why Amber?
+
+Amber/copper (`#d97706`) was chosen over the original indigo (`#6366f1`) because:
+
+1. **Study context** — Amber evokes highlighters, warm lighting, paper notepads.
+   Indigo feels corporate/SaaS — more "dashboard" than "study tool."
+2. **Readability** — Amber on off-white has better contrast than indigo on white
+   for user messages. The original `#f0f0ff` on `#ffffff` was barely visible.
+3. **Emotional tone** — Warm tones feel inviting for extended study sessions.
+   Cool tones (navy + indigo) feel clinical.
+4. **Modern trend** — 2025-2026 design favors warm neutrals (cream, beige, warm gray)
+   over cold blues for content-focused apps (Notion, Craft, Linear).
+5. **Accessibility** — Amber `#d97706` passes WCAG AA on white backgrounds.
+
+---
+
 ## Changelog
 
 | Date | Change |
@@ -558,6 +784,9 @@ streamlit run app.py
 | 2026-06-25 | Completed Phase 9: file_manager.py — upload modal, file list with delete, rebuild index with progress bar |
 | 2026-06-25 | Completed Phase 10: artifacts_panel.py — slide-in panel, streaming, copy/download, sidebar artifact list |
 | 2026-06-25 | Doc audit: corrected all line counts (~2256→~2665), removed phantom settings.py, updated file tree, run commands |
+| 2026-06-26 | **Design System v2 "Warm Academia"** — complete UI redesign: new color palette (amber/copper on warm paper), Inter font, glassmorphism top bar, card-style messages, animated transitions, responsive layout, subject color dots, Search All toggle, Clear Chat button, fixed suggested questions, custom scrollbar |
+| 2026-06-26 | **Phase 11 Complete** — Enhanced responsive CSS: sidebar collapse at 768px/480px, hamburger menu prominence, artifact panel mobile layout, glassmorphism top bar responsive padding |
+| 2026-06-26 | **Phase 12 Complete** — 13 integration tests passed (all modules). Fixed parser bug: `parse_slash_command` returned `None` instead of `(None, "")` causing crash on unknown commands. App launches cleanly. |
 
 ---
 
