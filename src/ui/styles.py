@@ -177,12 +177,29 @@ section[data-testid="stSidebar"] .stButton button:not([kind="primary"]):not([kin
     border: 1px solid var(--sidebar-border);
     border-radius: var(--radius-md);
     font-size: 0.82rem;
-    padding: 8px 12px;
+    padding: 6px 8px;
     transition: all 150ms ease;
+    line-height: 1.2;
 }
 section[data-testid="stSidebar"] .stButton button:not([kind="primary"]):not([kind="secondary"]):hover {
     background-color: var(--sidebar-hover);
     border-color: transparent;
+}
+
+/* Compact icon buttons in columns (rename/delete) */
+section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"] .stButton button {
+    padding: 4px 6px !important;
+    font-size: 0.8rem !important;
+    min-height: 0 !important;
+    line-height: 1.2;
+}
+
+/* Icon buttons (rename/delete) — compact sizing */
+section[data-testid="stSidebar"] .stButton button[kind="secondary"] {
+    padding: 4px 6px;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    min-height: 0;
 }
 
 /* Subject meta row inside expander (color dot visible when expanded) */

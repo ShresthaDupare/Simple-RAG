@@ -194,12 +194,12 @@ def _render_session_item(
             st.rerun()
 
     with col2:
-        if st.button("✏️", key=f"rename_{session_id}", help="Rename"):
+        if st.button("✏️", key=f"rename_{session_id}", help="Rename", use_container_width=True):
             st.session_state[f"renaming_{session_id}"] = True
             st.rerun()
 
     with col3:
-        if st.button("🗑️", key=f"delete_{session_id}", help="Delete"):
+        if st.button("🗑️", key=f"delete_{session_id}", help="Delete", use_container_width=True):
             delete_session(subject, session_id)
             if st.session_state.current_session_id == session_id:
                 st.session_state.current_session_id = None
