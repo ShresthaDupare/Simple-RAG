@@ -103,7 +103,7 @@ def render_artifact_panel() -> None:
 
     with st.container():
         st.markdown(
-            '<div class="artifact-panel">',
+            '<div style="background:#faf9f7;border-left:1px solid #e7e5e2;padding:16px;height:100vh;overflow-y:auto;">',
             unsafe_allow_html=True,
         )
 
@@ -141,7 +141,7 @@ def _render_artifact_content(artifact: Artifact) -> None:
 
     # Action buttons
     st.markdown(
-        '<div class="artifact-action-bar">',
+        '<div style="display:flex;gap:8px;margin-bottom:12px;">',
         unsafe_allow_html=True,
     )
     _render_copy_button(body, artifact.id)
@@ -167,7 +167,8 @@ def _render_copy_button(content: str, artifact_id: str) -> None:
         f"setTimeout(()=>this.innerHTML='📋 Copy',1500)"
     )
     st.markdown(
-        f'<button onclick="{js}" class="artifact-copy-btn">📋 Copy</button>',
+        f'<button onclick="{js}" style="background:#d97706;color:white;border:none;border-radius:6px;'
+        f'padding:6px 12px;font-size:0.85rem;cursor:pointer;">📋 Copy</button>',
         unsafe_allow_html=True,
     )
 
@@ -224,7 +225,7 @@ def generate_and_display_artifact(
                 full_text += token
                 # Display streaming text
                 st.markdown(
-                    f'<div class="artifact-content">{full_text}</div>',
+                    f'<div style="font-size:0.9rem;line-height:1.6;color:#1c1b1a;">{full_text}</div>',
                     unsafe_allow_html=True,
                 )
         except Exception as e:

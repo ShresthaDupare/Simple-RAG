@@ -56,7 +56,7 @@ def _render_upload_modal(subject: str) -> None:
 
         allowed = ", ".join(f"*{ext}" for ext in sorted(SUPPORTED_EXTENSIONS))
         st.markdown(
-            '<div class="dialog-upload-area">',
+            '<div style="border:2px dashed #e7e5e2;border-radius:12px;padding:24px;text-align:center;">',
             unsafe_allow_html=True,
         )
         uploaded = st.file_uploader(
@@ -113,17 +113,20 @@ def _render_file_list(subject: str) -> None:
         size_kb = file_path.stat().st_size / 1024
         has_index = index_exists(subject)
 
-        status_class = "indexed" if has_index else "not-indexed"
-        status_label = "✓ Indexed" if has_index else "⚠ Not indexed"
+        status_color = "#059669" if has_index else "#d97706"
+        status_bg = "#ecfdf5" if has_index else "#fffbeb"
+        status_label = "Indexed" if has_index else "Not indexed"
 
         cols = st.columns([6, 1])
         with cols[0]:
             st.markdown(
-                f'<div class="file-card">'
-                f'<span class="file-card-icon">{icon}</span>'
-                f'<span class="file-card-name">{file_path.name}</span>'
-                f'<span class="file-card-size">{size_kb:.0f} KB</span>'
-                f'<span class="file-status-pill {status_class}">{status_label}</span>'
+                f'<div style="display:flex;align-items:center;gap:8px;padding:8px 0;">'
+                f'<span>{icon}</span>'
+                f'<span style="flex:1;font-size:0.9rem;color:#1c1b1a;overflow:hidden;'
+                f'text-overflow:ellipsis;white-space:nowrap;">{file_path.name}</span>'
+                f'<span style="font-size:0.75rem;color:#78716c;">{size_kb:.0f} KB</span>'
+                f'<span style="font-size:0.7rem;padding:2px 8px;border-radius:10px;'
+                f'background:{status_bg};color:{status_color};">{status_label}</span>'
                 f"</div>",
                 unsafe_allow_html=True,
             )

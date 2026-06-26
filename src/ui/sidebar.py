@@ -137,11 +137,10 @@ def _render_subjects(subjects: list[str], search_query: str) -> None:
         ):
             # Subject meta row with color dot + session count
             st.markdown(
-                f'<div class="subject-meta-row">'
-                f'<span class="subject-dot-render" '
-                f'style="display:inline-block;width:10px;height:10px;'
+                f'<div style="display:flex;align-items:center;gap:8px;padding:4px 0;margin-bottom:4px;">'
+                f'<span style="display:inline-block;width:10px;height:10px;'
                 f"border-radius:50%;background:{color};flex-shrink:0;\"></span>"
-                f'<span class="subject-session-count">'
+                f'<span style="font-size:0.75rem;color:#9d9690;">'
                 f"{len(sessions)} chat(s)</span></div>",
                 unsafe_allow_html=True,
             )
@@ -236,7 +235,7 @@ def _render_settings() -> None:
     with st.expander("⚙ Settings", expanded=False):
         # Search All toggle
         st.markdown(
-            '<div class="search-all-wrapper">',
+            '<div style="padding:8px 0;margin-bottom:8px;">',
             unsafe_allow_html=True,
         )
         st.session_state.search_all = st.checkbox(

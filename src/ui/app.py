@@ -117,9 +117,9 @@ with main:
         render_file_manager()
     elif not st.session_state.subjects:
         st.markdown(
-            '<div class="empty-state">'
-            '<div class="empty-state-icon">📚</div>'
-            "<h2>Welcome to Study RAG</h2>"
+            '<div style="text-align:center;padding:80px 24px;color:#78716c;">'
+            '<div style="font-size:3rem;margin-bottom:16px;">📚</div>'
+            '<h2 style="color:#1c1b1a;margin-bottom:8px;">Welcome to Study RAG</h2>'
             "<p>No subjects found. Create folders in <code>data/</code> "
             "and add PDF or PPTX files to get started.</p>"
             "</div>",
@@ -127,10 +127,10 @@ with main:
         )
     elif not st.session_state.current_session_id:
         st.markdown(
-            '<div class="empty-state">'
-            '<div class="empty-state-icon">💬</div>'
-            "<h2>No chat selected</h2>"
-            '<p>Select a chat from the sidebar, or <span class="accent-text">'
+            '<div style="text-align:center;padding:80px 24px;color:#78716c;">'
+            '<div style="font-size:3rem;margin-bottom:16px;">💬</div>'
+            '<h2 style="color:#1c1b1a;margin-bottom:8px;">No chat selected</h2>'
+            '<p>Select a chat from the sidebar, or <span style="color:#d97706;font-weight:600;">'
             "+ New Chat</span> to begin.</p>"
             "</div>",
             unsafe_allow_html=True,
