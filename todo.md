@@ -163,6 +163,13 @@
 | 2026-06-25 | Doc Audit | PLAN.md, todo.md — corrected line counts, removed phantom settings.py, updated file tree and notes |
 | 2026-06-26 | Phase 11 | src/ui/styles.py — enhanced responsive CSS (768px/480px breakpoints), hamburger menu, artifact panel mobile layout |
 | 2026-06-26 | Phase 12 | test_phase12.py — 13 integration tests (config, models, parser, chat_store, artifact_store, loaders, rag_chain, vector_store, styles, UI imports). Fixed parser bug. App launches cleanly. |
+| 2026-06-26 | Design v2 | src/ui/styles.py, src/ui/app.py, src/ui/sidebar.py, src/ui/chat.py, src/ui/artifacts_panel.py, src/ui/file_manager.py, .streamlit/config.toml, PLAN.md — complete UI redesign "Warm Academia": amber/copper accent, warm paper bg, Inter font, card-style messages, glass top bar, animations, subject color dots, Search All toggle, Clear Chat, suggested questions fix, responsive CSS, custom scrollbar |
+| 2026-06-26 | Design v2 Fixes | src/ui/styles.py, src/ui/app.py — split CSS into BASE + ENHANCED blocks (removed :has() from base), updated config.toml theme colors, fixed user message visibility (white card with amber border), fixed scrollbar opacity, fixed artifact copy button CSS |
+| 2026-06-26 | CSS Injection Fix | src/ui/css_injector.py (new), src/ui/app.py — st.markdown fails on <style> blocks. Created JS-based CSS injector using st.components.v1.html() |
+| 2026-06-26 | Inline Styles | chat.py, sidebar.py, app.py, file_manager.py, artifacts_panel.py — Streamlit strips class attributes. All 36 class= converted to inline style= |
+| 2026-06-26 | Material Icons | src/ui/styles.py — added Material Symbols Outlined font to FONT_LINK |
+| 2026-06-26 | Error Handling | src/retrieval/rag_chain.py — clear error when no FAISS index exists, fixed delta.content None check |
+| 2026-06-26 | UI Fixes | sidebar.py, file_manager.py, styles.py — title visibility (!important), Back to Chat button, sidebar alignment, icon button compact sizing |
 
 ---
 
@@ -183,6 +190,21 @@
 | # | Severity | File | Issue | Fix |
 |---|----------|------|-------|-----|
 | 1 | HIGH | `artifacts/parser.py` | `parse_slash_command()` returns `None` for non-commands, but `chat.py:260` unpacks as `command, args = ...` — crashes on unknown commands | Changed return to `(None, "")` for non-matches; updated `is_slash_command()` |
+
+---
+
+## Design System v2 Bug Fixes (2026-06-26)
+
+| # | Severity | File | Issue | Fix |
+|---|----------|------|-------|-----|
+| 1 | CRITICAL | `styles.py`, `.streamlit/config.toml` | Streamlit theme config (`primaryColor=#6366f1`) overrode all new CSS amber colors and backgrounds. App looked identical to v1. | Updated config.toml to v2 palette: `primaryColor=#d97706`, `backgroundColor=#faf9f7`, `textColor=#1c1b1a`. Added `!important` to base `.stApp` declarations. |
+| 2 | CRITICAL | `styles.py` | CSS injected as single 1206-line block containing `:has()` selectors. Streamlit sanitizer likely rejected the entire `<style>` block, rendering raw CSS as visible text. | Split into `GLOBAL_CSS_BASE` (no `:has()`, essential styles) and `GLOBAL_CSS_ENHANCED` (animations, scrollbar, responsive). Injected as two separate `st.markdown()` calls. |
+| 3 | CRITICAL | `styles.py` | User message bubble `#fef3c7` on `#faf9f7` background had ~1.1:1 contrast ratio — nearly invisible. | Changed user messages to white card (`#ffffff`) with 4px amber left border. Now has clear visual distinction. |
+| 4 | HIGH | `artifacts_panel.py:170-176` | Copy button had broken inline style concatenation: `:hover` pseudo-class was outside `style` attribute, rendering as visible CSS text inside the button. | Replaced inline styles with CSS class `.artifact-copy-btn` defined in `styles.py`. |
+| 5 | HIGH | `sidebar.py:132-176` | Subject color dots used markdown `<div>` wrapper around `st.expander()`. Streamlit renders each element in its own container, so the wrapper div never contained the expander — CSS `::before` dot never appeared. | Removed wrapper div approach. Color dot now renders inside the expander body via `subject-meta-row` (visible when expanded). |
+| 6 | HIGH | `chat.py:322-340` | Chat container used markdown `<div>` wrapper around Streamlit elements. Same Streamlit rendering issue — wrapper never contained the chart content, centering CSS never applied. | Replaced with `st.columns([1, 6, 1])` centering approach when panel is closed. |
+| 7 | MEDIUM | `styles.py` | Scrollbar thumb `#d4cfc830` (19% opacity) was nearly invisible on light backgrounds. | Increased thumb opacity to ~50% (`#c5bfb880`), hover to opaque (`#a8a29e`). |
+| 8 | LOW | `styles.py:411` | Glass top bar used `:has(.glass-top-bar)` selector — moved to ENHANCED block. Replaced with direct `position: sticky` on `.glass-top-bar` div in BASE block. | Top bar now uses simpler sticky positioning without `:has()`. |
 
 ---
 

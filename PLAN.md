@@ -372,29 +372,30 @@ python-dotenv>=1.0.0
 
 | File | Purpose | ~Lines | Status |
 |------|---------|--------|--------|
-| `src/config.py` | Settings, env loading, constants, path helpers | ~70 | Done |
-| `src/models.py` | Dataclasses: ChatMessage, Session, Artifact, SourceChunk | ~112 | Done |
-| `src/exceptions.py` | Custom exceptions for clear error paths | ~35 | Done |
-| `src/loaders/scanner.py` | Scan subjects, list files | ~51 | Done |
-| `src/loaders/pdf_loader.py` | PDF → chunks + full text | ~52 | Done |
-| `src/loaders/pptx_loader.py` | PPTX → chunks + full text | ~64 | Done |
-| `src/loaders/__init__.py` | Dispatcher, load_and_chunk() | ~100 | Done |
-| `src/retrieval/embeddings.py` | Sentence-transformer wrapper | ~37 | Done |
-| `src/retrieval/vector_store.py` | FAISS create/load/search/search-all | ~162 | Done |
-| `src/retrieval/rag_chain.py` | Prompt building + DeepSeek streaming | ~166 | Done |
-| `src/storage/chat_store.py` | JSON CRUD for sessions | ~77 | Done |
-| `src/storage/artifact_store.py` | Artifact file management | ~93 | Done |
-| `src/artifacts/prompts.py` | All artifact prompt templates | ~45 | Done |
-| `src/artifacts/parser.py` | Slash command parsing | ~61 | Done |
-| `src/artifacts/generator.py` | Streaming artifact generation | ~102 | Done |
-| `src/ui/styles.py` | All CSS in one place (Streamlit 1.58.0 compatible) | ~530 | Done |
-| `src/ui/app.py` | Main entry, session state, routing | ~103 | Done |
-| `src/ui/sidebar.py` | Sidebar rendering + settings sliders | ~216 | Done |
-| `src/ui/chat.py` | Chat display + input + streaming + citations | ~251 | Done |
-| `src/ui/artifacts_panel.py` | Artifact slide-in panel + slash commands | ~210 | Done |
-| `src/ui/file_manager.py` | Upload, list, delete files + rebuild index | ~146 | Done |
+| `src/config.py` | Settings, env loading, constants, path helpers | ~94 | Done |
+| `src/models.py` | Dataclasses: ChatMessage, Session, Artifact, SourceChunk | ~134 | Done |
+| `src/exceptions.py` | Custom exceptions for clear error paths | ~52 | Done |
+| `src/loaders/scanner.py` | Scan subjects, list files | ~69 | Done |
+| `src/loaders/pdf_loader.py` | PDF → chunks + full text | ~72 | Done |
+| `src/loaders/pptx_loader.py` | PPTX → chunks + full text | ~86 | Done |
+| `src/loaders/__init__.py` | Dispatcher, load_and_chunk() | ~126 | Done |
+| `src/retrieval/embeddings.py` | Sentence-transformer wrapper | ~52 | Done |
+| `src/retrieval/vector_store.py` | FAISS create/load/search/search-all | ~213 | Done |
+| `src/retrieval/rag_chain.py` | Prompt building + DeepSeek streaming | ~219 | Done |
+| `src/storage/chat_store.py` | JSON CRUD for sessions | ~99 | Done |
+| `src/storage/artifact_store.py` | Artifact file management | ~114 | Done |
+| `src/artifacts/prompts.py` | All artifact prompt templates | ~48 | Done |
+| `src/artifacts/parser.py` | Slash command parsing | ~85 | Done |
+| `src/artifacts/generator.py` | Streaming artifact generation | ~122 | Done |
+| `src/ui/styles.py` | All CSS (injected via JS component) | ~1077 | Done |
+| `src/ui/app.py` | Main entry, session state, routing | ~141 | Done |
+| `src/ui/sidebar.py` | Sidebar rendering + settings sliders | ~287 | Done |
+| `src/ui/chat.py` | Chat display + input + streaming + citations | ~373 | Done |
+| `src/ui/artifacts_panel.py` | Artifact slide-in panel + slash commands | ~268 | Done |
+| `src/ui/file_manager.py` | Upload, list, delete files + rebuild index | ~207 | Done |
+| `src/ui/css_injector.py` | JS-based CSS injection component | ~38 | Done |
 
-**Total: ~2710 lines across 22 files.**
+**Total: ~4021 lines across 27 files.**
 
 ---
 
@@ -785,8 +786,40 @@ Amber/copper (`#d97706`) was chosen over the original indigo (`#6366f1`) because
 | 2026-06-25 | Completed Phase 10: artifacts_panel.py — slide-in panel, streaming, copy/download, sidebar artifact list |
 | 2026-06-25 | Doc audit: corrected all line counts (~2256→~2665), removed phantom settings.py, updated file tree, run commands |
 | 2026-06-26 | **Design System v2 "Warm Academia"** — complete UI redesign: new color palette (amber/copper on warm paper), Inter font, glassmorphism top bar, card-style messages, animated transitions, responsive layout, subject color dots, Search All toggle, Clear Chat button, fixed suggested questions, custom scrollbar |
+| 2026-06-26 | Bug fix: CSS split into BASE + ENHANCED blocks to avoid Streamlit sanitizer rejecting complex selectors (removed all `:has()` from base block) |
+| 2026-06-26 | Bug fix: `.streamlit/config.toml` updated to v2 colors — `primaryColor=#d97706`, `backgroundColor=#faf9f7`, `textColor=#1c1b1a` — old theme was overriding new CSS |
+| 2026-06-26 | Bug fix: User message bubble `#fef3c7` was invisible against `#faf9f7` bg (1.1:1 contrast). Changed to white card with 4px amber left border. |
+| 2026-06-26 | Bug fix: Artifact copy button had broken inline `:hover` concatenation causing visible CSS text. Replaced with CSS class `.artifact-copy-btn`. |
+| 2026-06-26 | Bug fix: Subject color dots wrapper div couldn't contain Streamlit expander elements. Dot now renders inside expander body only. |
+| 2026-06-26 | Bug fix: Chat container wrapper div couldn't contain Streamlit elements. Replaced with `st.columns([1,6,1])` centering approach. |
+| 2026-06-26 | Bug fix: Scrollbar thumb increased from 19% to 50% opacity for visibility on light backgrounds. |
 | 2026-06-26 | **Phase 11 Complete** — Enhanced responsive CSS: sidebar collapse at 768px/480px, hamburger menu prominence, artifact panel mobile layout, glassmorphism top bar responsive padding |
 | 2026-06-26 | **Phase 12 Complete** — 13 integration tests passed (all modules). Fixed parser bug: `parse_slash_command` returned `None` instead of `(None, "")` causing crash on unknown commands. App launches cleanly. |
+| 2026-06-26 | **CSS injection crisis fix** — `st.markdown(unsafe_allow_html=True)` fails on `<style>` blocks in Streamlit 1.58.0. Tried `st.html()` (renders as visible text), then `st.markdown` with separated `<link>` tags (still broken). Final fix: custom `css_injector.py` using `st.components.v1.html()` with JavaScript to inject CSS into parent document `<head>`. |
+| 2026-06-26 | **Inline styles migration** — Streamlit's HTML sanitizer strips `class` attributes from `st.markdown()` content. All 36 `class=` references across 5 files (chat.py, sidebar.py, app.py, file_manager.py, artifacts_panel.py) converted to inline `style=` attributes. |
+| 2026-06-26 | Added Material Icons font to FONT_LINK (fixes "keyboard_double_arrow_down" text rendering) |
+| 2026-06-26 | Improved error handling: `rag_chain.py` now shows clear message when no FAISS index exists ("Build Index first") |
+| 2026-06-26 | Fixed sidebar title visibility: `color:#f0ebe5 !important` to override Streamlit CSS |
+| 2026-06-26 | Added "← Back to Chat" button in file manager (was missing — user couldn't return to chat) |
+| 2026-06-26 | Fixed sidebar alignment: consistent spacing, search input styling, button/expander padding, removed duplicate CSS rules |
+| 2026-06-26 | Fixed rename/delete icon button alignment: `use_container_width=True` + compact CSS for buttons in columns |
+
+---
+
+## CSS Injection Bug Fixes (2026-06-26)
+
+| # | Severity | File | Issue | Fix |
+|---|----------|------|-------|-----|
+| 1 | CRITICAL | `app.py`, `styles.py` | `st.markdown(unsafe_allow_html=True)` renders `<style>` blocks as visible text in Streamlit 1.58.0 | Created `css_injector.py` using `st.components.v1.html()` with JavaScript to inject CSS into parent document `<head>` |
+| 2 | CRITICAL | 5 UI files | Streamlit's HTML sanitizer strips `class` attributes from `st.markdown()` content | Converted all 36 `class=` references to inline `style=` attributes |
+| 3 | HIGH | `styles.py` | `<link>` tag concatenated with `<style>` block — sanitizer rejects `<link>`, breaks entire block | Separated FONT_LINK into its own `inject_css()` call |
+| 4 | HIGH | `styles.py` | Material Icons font not loaded — icons rendered as text | Added Material Symbols Outlined to FONT_LINK |
+| 5 | HIGH | `rag_chain.py` | `delta.content` truthiness check fails when content is `None` | Changed to `is not None` check |
+| 6 | HIGH | `rag_chain.py` | No clear error when FAISS index missing | Added `IndexNotFoundError` catch with helpful message |
+| 7 | MEDIUM | `sidebar.py` | Title color overridden by Streamlit CSS | Added `!important` to inline style |
+| 8 | MEDIUM | `file_manager.py` | No way to return from Manage Files to chat | Added "← Back to Chat" button |
+| 9 | MEDIUM | `styles.py`, `sidebar.py` | Sidebar elements had inconsistent spacing | Added consistent gap/padding rules, removed duplicates |
+| 10 | LOW | `sidebar.py`, `styles.py` | Icon buttons overflowed their columns | Added `use_container_width=True` + compact CSS |
 
 ---
 
