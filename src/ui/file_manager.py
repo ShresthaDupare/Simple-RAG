@@ -23,6 +23,11 @@ def render_file_manager() -> None:
         st.info("Select a subject first.")
         return
 
+    # Back button to return to chat
+    if st.button("← Back to Chat", use_container_width=True, key="back_to_chat"):
+        st.session_state["show_file_manager"] = False
+        st.rerun()
+
     st.subheader(f"📁 Files — {subject}")
 
     # Upload button

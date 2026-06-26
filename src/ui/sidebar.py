@@ -31,14 +31,14 @@ def render_sidebar() -> None:
         st.markdown(
             '<div style="display:flex;align-items:center;gap:8px;padding:4px 0 0 0;">'
             '<span style="font-size:1.4rem;">📚</span>'
-            '<span style="font-size:1.25rem;font-weight:700;color:#f0ebe5;'
+            '<span style="font-size:1.25rem;font-weight:700;color:#f0ebe5 !important;'
             'letter-spacing:-0.02em;">Study RAG</span>'
             "</div>",
             unsafe_allow_html=True,
         )
         st.markdown(
-            '<p style="font-size:0.75rem;color:var(--sidebar-text-dim);'
-            "margin:-4px 0 12px 0;\">"
+            '<p style="font-size:0.75rem;color:#9d9690 !important;'
+            'margin:-4px 0 12px 0;">'
             "Study assistant with RAG</p>",
             unsafe_allow_html=True,
         )
