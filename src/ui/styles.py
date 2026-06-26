@@ -128,24 +128,6 @@ section[data-testid="stSidebar"] h1 {
     margin-bottom: 4px;
 }
 
-/* Search input */
-section[data-testid="stSidebar"] .stTextInput [data-testid="stTextInputRootElement"] input {
-    background-color: var(--sidebar-surface);
-    color: var(--sidebar-text);
-    border: 1px solid var(--sidebar-border);
-    border-radius: var(--radius-md);
-    font-size: 0.85rem;
-    padding: 8px 12px;
-    transition: border-color 150ms ease;
-}
-section[data-testid="stSidebar"] .stTextInput [data-testid="stTextInputRootElement"] input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(217,119,6,0.15);
-}
-section[data-testid="stSidebar"] .stTextInput [data-testid="stTextInputRootElement"] input::placeholder {
-    color: var(--sidebar-text-dim);
-}
-
 /* New Chat button (primary in sidebar) */
 section[data-testid="stSidebar"] .stButton button[kind="primary"],
 section[data-testid="stSidebar"] .stButton button[data-testid="baseButton-primary"] {
@@ -203,43 +185,6 @@ section[data-testid="stSidebar"] .stButton button:not([kind="primary"]):not([kin
     border-color: transparent;
 }
 
-/* Expanders */
-section[data-testid="stSidebar"] [data-testid="stExpander"] {
-    border: none;
-}
-section[data-testid="stSidebar"] [data-testid="stExpander"] details {
-    border-color: var(--sidebar-border) !important;
-    background-color: transparent;
-    border-radius: var(--radius-sm);
-}
-section[data-testid="stSidebar"] [data-testid="stExpander"] summary {
-    color: var(--sidebar-text) !important;
-    background-color: transparent !important;
-    font-weight: 600;
-    font-size: 0.82rem;
-    padding: 8px 8px;
-    border-radius: var(--radius-sm);
-    transition: background-color 150ms ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-section[data-testid="stSidebar"] [data-testid="stExpander"] summary:hover {
-    background-color: var(--sidebar-hover) !important;
-}
-section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] {
-    background-color: transparent !important;
-    border-top-color: var(--sidebar-border) !important;
-    padding-left: 8px;
-    padding-right: 8px;
-}
-section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] p,
-section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] span,
-section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] label,
-section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] [data-testid="stWidgetLabel"] {
-    color: var(--sidebar-text) !important;
-}
-
 /* Subject meta row inside expander (color dot visible when expanded) */
 .subject-meta-row {
     display: flex;
@@ -281,6 +226,72 @@ section[data-testid="stSidebar"] hr {
 }
 section[data-testid="stSidebar"] [data-testid="stMarkdown"] hr {
     border-color: var(--sidebar-border) !important;
+}
+
+/* Consistent spacing between sidebar elements */
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > [data-testid="stVerticalBlock"] {
+    gap: 0.4rem !important;
+}
+
+/* Search input — consistent with button styling */
+section[data-testid="stSidebar"] .stTextInput {
+    margin-bottom: 0.25rem;
+}
+section[data-testid="stSidebar"] .stTextInput [data-testid="stTextInputRootElement"] {
+    border-radius: var(--radius-md) !important;
+}
+section[data-testid="stSidebar"] .stTextInput [data-testid="stTextInputRootElement"] input {
+    background-color: var(--sidebar-surface) !important;
+    color: var(--sidebar-text) !important;
+    border: 1px solid var(--sidebar-border) !important;
+    border-radius: var(--radius-md) !important;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    transition: border-color 150ms ease;
+}
+section[data-testid="stSidebar"] .stTextInput [data-testid="stTextInputRootElement"] input:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 2px rgba(217,119,6,0.15);
+}
+section[data-testid="stSidebar"] .stTextInput [data-testid="stTextInputRootElement"] input::placeholder {
+    color: var(--sidebar-text-dim) !important;
+}
+
+/* Buttons — consistent padding and alignment */
+section[data-testid="stSidebar"] .stButton {
+    margin-bottom: 0.15rem;
+}
+section[data-testid="stSidebar"] .stButton button {
+    border-radius: var(--radius-md) !important;
+    font-size: 0.85rem;
+}
+
+/* Expanders — consistent with buttons */
+section[data-testid="stSidebar"] [data-testid="stExpander"] {
+    border: none !important;
+    margin-bottom: 0.15rem;
+}
+section[data-testid="stSidebar"] [data-testid="stExpander"] details {
+    border: 1px solid var(--sidebar-border) !important;
+    border-radius: var(--radius-md) !important;
+    background-color: transparent;
+}
+section[data-testid="stSidebar"] [data-testid="stExpander"] summary {
+    color: var(--sidebar-text) !important;
+    background-color: transparent !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    transition: background-color 150ms ease;
+}
+section[data-testid="stSidebar"] [data-testid="stExpander"] summary:hover {
+    background-color: var(--sidebar-hover) !important;
+}
+section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] {
+    background-color: transparent !important;
+    border-top-color: var(--sidebar-border) !important;
+    padding: 4px 8px;
 }
 
 /* Markdown in sidebar */
@@ -378,11 +389,11 @@ section[data-testid="stSidebar"] .stDownloadButton button:hover {
 }
 
 /* -------------------------------------------------------------------------
-   User messages — amber-tinted bubble
+   User messages — white card with amber accent border
    ------------------------------------------------------------------------- */
 .user-message {
-    background: linear-gradient(135deg, #fef3c7, #fffbeb);
-    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    border-left: 4px solid var(--accent);
     border-radius: var(--radius-lg);
     padding: 14px 18px;
     margin: 12px 0 12px 48px;
@@ -942,15 +953,15 @@ GLOBAL_CSS_ENHANCED = """
     background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-    background: #d4cfc830;
+    background: #c5bfb880;
     border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: #d4cfc860;
+    background: #a8a29e;
 }
 * {
     scrollbar-width: thin;
-    scrollbar-color: #d4cfc830 transparent;
+    scrollbar-color: #c5bfb880 transparent;
 }
 
 /* -------------------------------------------------------------------------
