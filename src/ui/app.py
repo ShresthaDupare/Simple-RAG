@@ -19,7 +19,7 @@ from src.config import (
 )
 from src.loaders.scanner import scan_subjects
 from src.storage.chat_store import load_sessions
-from src.ui.styles import GLOBAL_CSS
+from src.ui.styles import GLOBAL_CSS_BASE, GLOBAL_CSS_ENHANCED
 
 # ---------------------------------------------------------------------------
 # Page config
@@ -32,8 +32,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Inject global CSS + Inter font
-st.markdown(GLOBAL_CSS, unsafe_allow_html=True)
+# Inject global CSS + Inter font in two blocks:
+# BASE first (guaranteed to apply), then ENHANCED (graceful degradation)
+st.markdown(GLOBAL_CSS_BASE, unsafe_allow_html=True)
+st.markdown(GLOBAL_CSS_ENHANCED, unsafe_allow_html=True)
 
 # ---------------------------------------------------------------------------
 # Session state defaults

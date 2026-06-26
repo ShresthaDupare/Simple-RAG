@@ -1,8 +1,21 @@
-"""All CSS for the Streamlit app — Design System v2 'Warm Academia'."""
+"""All CSS for the Streamlit app — Design System v2 'Warm Academia'.
+
+CSS is split into two blocks:
+  - GLOBAL_CSS_BASE: Essential styles (variables, layout, messages, sidebar, etc.)
+    No :has() selectors or other complex pseudo-classes that could cause
+    Streamlit's HTML sanitizer to reject the entire <style> block.
+  - GLOBAL_CSS_ENHANCED: Animations, scrollbar, responsive, and other
+    progressive enhancements that gracefully degrade if unsupported.
+"""
 
 FONT_LINK = """<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">"""
 
-GLOBAL_CSS = FONT_LINK + """
+# ---------------------------------------------------------------------------
+# BASE CSS — essential visual styles. No :has() selectors.
+# If this block fails, the app has no custom styling at all.
+# ---------------------------------------------------------------------------
+
+GLOBAL_CSS_BASE = FONT_LINK + """
 <style>
 /* =========================================================================
    DESIGN SYSTEM v2 — "Warm Academia"
@@ -82,28 +95,6 @@ body, .stApp {
 }
 
 /* -------------------------------------------------------------------------
-   Scrollbar
-   ------------------------------------------------------------------------- */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-::-webkit-scrollbar-thumb {
-    background: #d4cfc830;
-    border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: #d4cfc860;
-}
-* {
-    scrollbar-width: thin;
-    scrollbar-color: #d4cfc830 transparent;
-}
-
-/* -------------------------------------------------------------------------
    Sidebar — warm dark
    ------------------------------------------------------------------------- */
 section[data-testid="stSidebar"] {
@@ -111,7 +102,6 @@ section[data-testid="stSidebar"] {
     border-right: 1px solid var(--sidebar-border);
 }
 
-/* All text in sidebar */
 section[data-testid="stSidebar"] p,
 section[data-testid="stSidebar"] span,
 section[data-testid="stSidebar"] label,
@@ -130,7 +120,6 @@ section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] {
     font-family: var(--font-family);
 }
 
-/* Headings */
 section[data-testid="stSidebar"] h1,
 section[data-testid="stSidebar"] h2 {
     color: #f0ebe5 !important;
@@ -161,7 +150,7 @@ section[data-testid="stSidebar"] .stTextInput [data-testid="stTextInputRootEleme
     color: var(--sidebar-text-dim);
 }
 
-/* New Chat button */
+/* New Chat button (primary in sidebar) */
 section[data-testid="stSidebar"] .stButton button[kind="primary"],
 section[data-testid="stSidebar"] .stButton button[data-testid="baseButton-primary"] {
     background: var(--accent-gradient) !important;
@@ -203,7 +192,7 @@ section[data-testid="stSidebar"] .stButton button[data-testid="baseButton-second
     border-color: transparent;
 }
 
-/* Sidebar primary buttons that are NOT the New Chat (e.g. Manage Files) */
+/* Sidebar default buttons (e.g. Manage Files) */
 section[data-testid="stSidebar"] .stButton button:not([kind="primary"]):not([kind="secondary"]) {
     background-color: var(--sidebar-surface);
     color: var(--sidebar-text) !important;
@@ -255,7 +244,7 @@ section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] [data-testid=
     color: var(--sidebar-text) !important;
 }
 
-/* Subject meta row inside expander (color dot appears when expanded) */
+/* Subject meta row inside expander (color dot visible when expanded) */
 .subject-meta-row {
     display: flex;
     align-items: center;
@@ -269,49 +258,7 @@ section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] [data-testid=
     color: var(--sidebar-text-dim);
 }
 
-/* Session items */
-.session-item-row {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 2px 0;
-    border-radius: var(--radius-sm);
-    transition: background-color 150ms ease;
-}
-.session-item-row:hover {
-    background-color: var(--sidebar-hover);
-}
-.session-item-row.active {
-    background-color: var(--sidebar-active);
-    border-left: 3px solid var(--accent);
-    padding-left: 4px;
-}
-.session-item-row .session-name-btn {
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.session-item-row .session-action-btn {
-    opacity: 0;
-    transition: opacity 150ms ease;
-    background: none;
-    border: none;
-    color: var(--sidebar-text-dim);
-    cursor: pointer;
-    padding: 2px 6px;
-    font-size: 0.75rem;
-    border-radius: 4px;
-}
-.session-item-row:hover .session-action-btn {
-    opacity: 1;
-}
-.session-item-row .session-action-btn:hover {
-    background-color: var(--sidebar-active);
-    color: var(--sidebar-text);
-}
-
-/* Alert/info boxes */
+/* Alert/info boxes in sidebar */
 section[data-testid="stSidebar"] [data-testid="stAlert"] {
     background-color: var(--sidebar-surface) !important;
     border-radius: var(--radius-sm);
@@ -340,7 +287,7 @@ section[data-testid="stSidebar"] [data-testid="stMarkdown"] hr {
     border-color: var(--sidebar-border) !important;
 }
 
-/* Markdown content in sidebar */
+/* Markdown in sidebar */
 section[data-testid="stSidebar"] [data-testid="stMarkdown"] p,
 section[data-testid="stSidebar"] [data-testid="stMarkdown"] span,
 section[data-testid="stSidebar"] [data-testid="stMarkdown"] li,
@@ -355,7 +302,7 @@ section[data-testid="stSidebar"] [data-testid="stMarkdown"] a:hover {
     color: var(--accent-hover) !important;
 }
 
-/* Sidebar slider labels */
+/* Slider labels */
 section[data-testid="stSidebar"] .stSlider [data-testid="stWidgetLabel"] {
     color: var(--sidebar-text) !important;
     font-size: 0.78rem;
@@ -369,7 +316,7 @@ section[data-testid="stSidebar"] .stSlider [data-testid="stSliderTickBar"] {
     color: var(--sidebar-text-dim) !important;
 }
 
-/* Sidebar checkbox (Search All toggle) */
+/* Checkbox (Search All toggle) */
 section[data-testid="stSidebar"] .stCheckbox label {
     color: var(--sidebar-text) !important;
     font-size: 0.82rem;
@@ -378,13 +325,13 @@ section[data-testid="stSidebar"] .stCheckbox [data-testid="stWidgetLabel"] {
     color: var(--sidebar-text) !important;
 }
 
-/* Sidebar caption/note text */
+/* Caption text */
 section[data-testid="stSidebar"] [data-testid="stCaption"] {
     color: var(--sidebar-text-dim) !important;
     font-size: 0.75rem;
 }
 
-/* Sidebar download buttons */
+/* Download buttons */
 section[data-testid="stSidebar"] .stDownloadButton button {
     background-color: var(--sidebar-surface);
     color: var(--sidebar-text) !important;
@@ -398,34 +345,19 @@ section[data-testid="stSidebar"] .stDownloadButton button:hover {
 }
 
 /* -------------------------------------------------------------------------
-   Subject headers
+   Top bar — sticky header (no :has() selector for Streamlit compat)
    ------------------------------------------------------------------------- */
-
-/* -------------------------------------------------------------------------
-   Top bar — glassmorphism
-   ------------------------------------------------------------------------- */
-
-/* Glassmorphism effect on the top bar row (columns container)
-   Uses :not(:has(...)) to avoid matching nested horizontal blocks
-   when the artifact panel creates an outer [3,1] columns layout */
-[data-testid="stHorizontalBlock"]:has(.glass-top-bar):not(:has([data-testid="stHorizontalBlock"])) {
+.glass-top-bar {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(255, 255, 255, 0.80);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.94);
     border-bottom: 1px solid var(--border);
-    padding: 4px 8px;
-    margin-bottom: 12px;
-    border-radius: 0;
-}
-
-.glass-top-bar {
+    padding: 6px 0;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 4px 0;
 }
 
 .top-bar-title {
@@ -449,45 +381,6 @@ section[data-testid="stSidebar"] .stDownloadButton button:hover {
     white-space: nowrap;
 }
 
-.clear-chat-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    color: var(--text-dim);
-    font-size: 0.78rem;
-    padding: 6px 12px;
-    cursor: pointer;
-    transition: all 150ms ease;
-    font-family: var(--font-family);
-}
-.clear-chat-btn:hover {
-    background: var(--error-bg);
-    border-color: var(--error);
-    color: var(--error);
-}
-
-/* -------------------------------------------------------------------------
-   Chat container
-   ------------------------------------------------------------------------- */
-.chat-container {
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 0 16px 16px;
-}
-
-/* -------------------------------------------------------------------------
-   Animations
-   ------------------------------------------------------------------------- */
-@keyframes messageIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
 /* -------------------------------------------------------------------------
    User messages — amber-tinted bubble
    ------------------------------------------------------------------------- */
@@ -503,7 +396,6 @@ section[data-testid="stSidebar"] .stDownloadButton button:hover {
     font-size: 0.9375rem;
     line-height: 1.6;
     color: var(--text);
-    animation: messageIn 0.2s ease;
     float: right;
     clear: both;
 }
@@ -521,25 +413,8 @@ section[data-testid="stSidebar"] .stDownloadButton button:hover {
     font-size: 0.9375rem;
     line-height: 1.6;
     color: var(--text);
-    animation: messageIn 0.25s ease;
     position: relative;
     clear: both;
-}
-
-.assistant-avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 6px;
-    background: var(--accent-gradient);
-    color: white;
-    font-size: 0.7rem;
-    font-weight: 600;
-    margin-right: 8px;
-    flex-shrink: 0;
-    vertical-align: middle;
 }
 
 .assistant-content {
@@ -554,7 +429,7 @@ section[data-testid="stSidebar"] .stDownloadButton button:hover {
     margin-bottom: 0;
 }
 
-/* Copy button */
+/* Copy button (hover reveal) */
 .message-actions {
     display: none;
     position: absolute;
@@ -650,7 +525,6 @@ div[data-testid="stChatInput"] textarea::placeholder {
     border-radius: var(--radius-lg);
 }
 
-/* Sort button in chat input explicitly */
 button[data-testid="stChatInput-send"] {
     background: var(--accent-gradient) !important;
     border-radius: var(--radius-sm) !important;
@@ -662,7 +536,6 @@ button[data-testid="stChatInput-send"]:hover {
     box-shadow: 0 2px 8px rgba(217,119,6,0.3);
 }
 
-/* File upload attachment in chat input */
 button[kind="tertiary"] {
     color: var(--text-dim) !important;
     transition: color 150ms ease !important;
@@ -672,25 +545,20 @@ button[kind="tertiary"]:hover {
 }
 
 /* -------------------------------------------------------------------------
-   Settings — sidebar
+   Settings
    ------------------------------------------------------------------------- */
-.settings-section {
-    margin-top: 8px;
-}
-
 .search-all-wrapper {
     padding: 8px 0;
     margin-bottom: 8px;
 }
 
 /* -------------------------------------------------------------------------
-   Suggested questions — cards
+   Suggested questions
    ------------------------------------------------------------------------- */
 .suggested-section {
     text-align: center;
     margin-top: 48px;
     margin-bottom: 24px;
-    animation: fadeIn 0.4s ease;
 }
 .suggested-label {
     font-size: 0.85rem;
@@ -721,7 +589,6 @@ button[kind="tertiary"]:hover {
     transform: translateY(-1px);
 }
 
-/* Streamlit buttons used for suggested questions */
 .suggested-question-btn {
     text-align: left !important;
     display: flex !important;
@@ -739,7 +606,6 @@ button[kind="tertiary"]:hover {
     justify-content: center;
     text-align: center;
     padding: 80px 24px;
-    animation: fadeIn 0.4s ease;
 }
 .empty-state-icon {
     font-size: 3rem;
@@ -780,7 +646,6 @@ button[kind="tertiary"]:hover {
     padding: 20px 20px 20px 24px;
     min-height: calc(100vh - 40px);
     border-radius: var(--radius-xl) 0 0 var(--radius-xl);
-    animation: fadeIn 0.25s ease;
 }
 
 .artifact-panel-header {
@@ -846,7 +711,7 @@ button[kind="tertiary"]:hover {
     margin-bottom: 8px;
 }
 
-/* Artifact panel markdown (rendered via st.markdown) */
+/* Artifact panel markdown (from st.markdown) */
 .artifact-panel [data-testid="stMarkdown"] {
     font-size: 0.9rem;
     line-height: 1.65;
@@ -1000,22 +865,6 @@ button[kind="tertiary"]:hover {
     color: var(--warning);
 }
 
-.file-delete-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-subtle);
-    cursor: pointer;
-    font-size: 0.85rem;
-    padding: 4px 6px;
-    border-radius: 4px;
-    transition: all 150ms ease;
-    margin-left: 4px;
-}
-.file-delete-btn:hover {
-    background: var(--error-bg);
-    color: var(--error);
-}
-
 /* Upload modal */
 .dialog-upload-area {
     border: 2px dashed var(--border);
@@ -1029,20 +878,13 @@ button[kind="tertiary"]:hover {
     border-color: var(--accent);
 }
 
-/* Progress bar */
-.stProgress > div > div > div > div {
-    background: var(--accent-gradient) !important;
-}
-
-/* Rebuild section buttons */
+/* Rebuild section */
 .rebuild-section .stButton button {
     border-radius: var(--radius-md);
     transition: all 150ms ease;
 }
 
-/* -------------------------------------------------------------------------
-   No subjects / no session placeholder
-   ------------------------------------------------------------------------- */
+/* Select chat placeholder */
 .select-chat-placeholder {
     display: flex;
     align-items: center;
@@ -1051,6 +893,75 @@ button[kind="tertiary"]:hover {
     text-align: center;
     color: var(--text-subtle);
     font-size: 0.95rem;
+}
+</style>
+"""
+
+# ---------------------------------------------------------------------------
+# ENHANCED CSS — animations, scrollbar, progress bar, responsive.
+# Injected separately. If this block fails, the base styles still work.
+# ---------------------------------------------------------------------------
+
+GLOBAL_CSS_ENHANCED = """
+<style>
+/* =========================================================================
+   ENHANCED STYLES
+   Progressive enhancements: animations, custom scrollbar, progress bars,
+   responsive breakpoints. Graceful degradation if unsupported.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   Animations
+   ------------------------------------------------------------------------- */
+@keyframes messageIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.user-message {
+    animation: messageIn 0.2s ease;
+}
+.assistant-message {
+    animation: messageIn 0.25s ease;
+}
+.empty-state,
+.suggested-section,
+.artifact-panel {
+    animation: fadeIn 0.4s ease;
+}
+
+/* -------------------------------------------------------------------------
+   Scrollbar
+   ------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #d4cfc830;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #d4cfc860;
+}
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #d4cfc830 transparent;
+}
+
+/* -------------------------------------------------------------------------
+   Progress bar
+   ------------------------------------------------------------------------- */
+.stProgress > div > div > div > div {
+    background: var(--accent-gradient) !important;
 }
 
 /* -------------------------------------------------------------------------
@@ -1064,37 +975,11 @@ div[data-testid="stNotification"] {
 }
 
 /* -------------------------------------------------------------------------
-   Responsive — 768px breakpoint (sidebar collapses, hamburger visible)
+   Responsive — 768px
    ------------------------------------------------------------------------- */
 @media (max-width: 768px) {
-    /* Force sidebar to narrow collapsed state when Streamlit opens it */
     section[data-testid="stSidebar"] {
-        max-width: 280px !important;
-        min-width: 280px !important;
-    }
-
-    /* When sidebar is collapsed (not open), main fills full width */
-    section[data-testid="stSidebar"][aria-expanded="false"],
-    section[data-testid="stSidebar"]:not([aria-expanded="true"]) {
-        /* Streamlit handles the actual collapse via its own JS */
-    }
-
-    /* Hamburger menu button — make it more prominent */
-    button[data-testid="stSidebarOpenButton"] {
-        background: var(--surface) !important;
-        border: 1px solid var(--border) !important;
-        border-radius: var(--radius-md) !important;
-        box-shadow: var(--shadow-md) !important;
-        width: 36px !important;
-        height: 36px !important;
-        top: 12px !important;
-        z-index: 999 !important;
-        transition: all 150ms ease !important;
-    }
-    button[data-testid="stSidebarOpenButton"]:hover {
-        background: var(--accent-light) !important;
-        border-color: var(--accent) !important;
-        transform: scale(1.05);
+        max-width: 260px !important;
     }
 
     .user-message {
@@ -1106,10 +991,6 @@ div[data-testid="stNotification"] {
     .assistant-message {
         margin-left: 0;
         margin-right: 0;
-    }
-
-    .chat-container {
-        padding: 0 8px;
     }
 
     .empty-state {
@@ -1132,11 +1013,6 @@ div[data-testid="stNotification"] {
         padding: 12px;
     }
 
-    /* On narrow screens, artifact panel takes more space ratio */
-    [data-testid="stHorizontalBlock"]:has(.artifact-panel) {
-        gap: 0 !important;
-    }
-
     .file-card {
         flex-wrap: wrap;
         gap: 6px;
@@ -1150,22 +1026,12 @@ div[data-testid="stNotification"] {
     .suggested-section {
         margin-top: 32px;
     }
-
-    /* Glass top bar responsive */
-    [data-testid="stHorizontalBlock"]:has(.glass-top-bar):not(:has([data-testid="stHorizontalBlock"])) {
-        padding: 4px 8px;
-    }
 }
 
 /* -------------------------------------------------------------------------
-   Responsive — 480px breakpoint (tight mobile)
+   Responsive — 480px
    ------------------------------------------------------------------------- */
 @media (max-width: 480px) {
-    section[data-testid="stSidebar"] {
-        max-width: 240px !important;
-        min-width: 240px !important;
-    }
-
     .user-message {
         margin-left: 8px;
         max-width: 95%;
@@ -1178,28 +1044,6 @@ div[data-testid="stNotification"] {
 
     .empty-state {
         padding: 32px 12px;
-    }
-
-    .empty-state h2 {
-        font-size: 1.1rem;
-    }
-
-    .empty-state p {
-        font-size: 0.85rem;
-    }
-
-    .top-bar-title {
-        font-size: 0.85rem;
-    }
-
-    .clear-chat-btn {
-        padding: 4px 8px;
-        font-size: 0.72rem;
-    }
-
-    /* Tighten chat container on very small screens */
-    [data-testid="stHorizontalBlock"]:has(.glass-top-bar):not(:has([data-testid="stHorizontalBlock"])) {
-        padding: 2px 4px;
     }
 }
 </style>
