@@ -19,6 +19,7 @@ from src.config import (
 )
 from src.loaders.scanner import scan_subjects
 from src.storage.chat_store import load_sessions
+from src.ui.css_injector import inject_css
 from src.ui.styles import FONT_LINK, GLOBAL_CSS_BASE, GLOBAL_CSS_ENHANCED
 
 # ---------------------------------------------------------------------------
@@ -32,12 +33,12 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Inject fonts (Inter + Material Icons) — <link> tags need st.html(), not st.markdown
-st.html(FONT_LINK)
+# Inject fonts (Inter + Material Icons) as hidden <link> tags
+inject_css(FONT_LINK)
 
-# Inject global CSS — st.html() bypasses markdown parser, handles <style> blocks correctly
-st.html(GLOBAL_CSS_BASE)
-st.html(GLOBAL_CSS_ENHANCED)
+# Inject global CSS
+inject_css(GLOBAL_CSS_BASE)
+inject_css(GLOBAL_CSS_ENHANCED)
 
 # ---------------------------------------------------------------------------
 # Session state defaults
