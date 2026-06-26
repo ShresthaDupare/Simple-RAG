@@ -1,21 +1,14 @@
-"""All CSS for the Streamlit app — Design System v2 'Warm Academia'.
+"""All CSS for the Streamlit app — Design System v2 'Warm Academia'."""
 
-CSS is split into two blocks:
-  - GLOBAL_CSS_BASE: Essential styles (variables, layout, messages, sidebar, etc.)
-    No :has() selectors or other complex pseudo-classes that could cause
-    Streamlit's HTML sanitizer to reject the entire <style> block.
-  - GLOBAL_CSS_ENHANCED: Animations, scrollbar, responsive, and other
-    progressive enhancements that gracefully degrade if unsupported.
-"""
-
-FONT_LINK = """<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">"""
+# Load Inter font via Google Fonts (injected separately, NOT inside <style>)
+FONT_LINK = '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">'
 
 # ---------------------------------------------------------------------------
 # BASE CSS — essential visual styles. No :has() selectors.
 # If this block fails, the app has no custom styling at all.
 # ---------------------------------------------------------------------------
 
-GLOBAL_CSS_BASE = FONT_LINK + """
+GLOBAL_CSS_BASE = """
 <style>
 /* =========================================================================
    DESIGN SYSTEM v2 — "Warm Academia"
