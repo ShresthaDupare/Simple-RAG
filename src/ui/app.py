@@ -32,10 +32,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Inject global CSS + Inter font in two blocks:
-# BASE first (guaranteed to apply), then ENHANCED (graceful degradation)
-st.markdown(GLOBAL_CSS_BASE, unsafe_allow_html=True)
-st.markdown(GLOBAL_CSS_ENHANCED, unsafe_allow_html=True)
+# Inject global CSS + Inter font
+# Use st.html() which bypasses CSS sanitizer (st.markdown strips some CSS)
+st.html(GLOBAL_CSS_BASE)
+st.html(GLOBAL_CSS_ENHANCED)
 
 # ---------------------------------------------------------------------------
 # Session state defaults
